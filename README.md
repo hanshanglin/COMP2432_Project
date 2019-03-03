@@ -1,5 +1,11 @@
 # COMP2432_Project
 
+    [ ] 小川 test case+input
+    [ ] hansama boxing time+record
+    [ ] Jason 算法(FCFS)
+    [ ] Lza print,log
+    [ ] Lian case 
+
 ## Input(part 1):
 1. add details (duration,subject,priority,etc)
 2. assign an ID
