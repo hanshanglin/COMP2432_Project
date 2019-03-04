@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdio.h>
 
-#inlcude "my_time.h"
+#include "mytime.h"
 
 enum task_type
 {Assignment,Project,Revision,Activity};
