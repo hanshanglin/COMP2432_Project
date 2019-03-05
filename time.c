@@ -18,13 +18,13 @@ bool set_start_date(char* date){
 bool set_end_date(char* date){
     assert(is_valid_date(date));
 
-    start_date = date;
+    end_date = date;
     return true;
 }
 
 //get date_to_base
 int convert_to_base(char* date){
-    assert(is_valid_date(date));
+    assert(is_valid_date(date)&&start_date!=NULL);
 
     //todomark
     return 0;
@@ -40,9 +40,9 @@ char* convert_to_date(int num){
 
 //check valid date "YYYY-MM-DD"
 bool is_valid_date(char* date){
-        if(strlen(date) != 10)
+        if(strlen(date) < 10)
         return false;
-    for(size_t i = 0; i < strlen(date); i++)
+    for(size_t i = 0; i < 10; i++)
     {   
         if(i == 4 || i == 7)// '-'
             continue;
