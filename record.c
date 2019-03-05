@@ -5,27 +5,22 @@
 #include "mytime.h"
 #include "record.h"
 
-#define SIZE 128
-typedef struct 
-{
-    Record value[SIZE];
-    int count=0;
-    int ptr=0;
-    Data_record* next;
-}Data_record;
 
 void add_data(Data_record* block, Record record){
-    while(block->next!=null&&block->count==SIZE)
+    while(block->next!=NULL&&block->count==SIZE)
         block=block->next;
-    if(block.count==SIZE){
+    if(block->count==SIZE){
         block->next=(Data_record*)malloc(sizeof(Data_record));
         block=block->next;
+        block->count = 0;
+        block ->next= NULL;
+        block ->ptr = 0;
     }
-    block->value[count++]=record;
+    block->value[block->count++]=record;
 }
 
 Record next(Data_record* block){
-    while(block->next!=null&&block->ptr==SIZE)
+    while(block->next!=NULL&&block->ptr==SIZE)
         block=block->next;
-    return block->value[ptr++];
+    return block->value[block->ptr++];
 }
