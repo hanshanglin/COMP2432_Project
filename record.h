@@ -11,7 +11,7 @@ enum task_type
     Activity
 };
 
-typedef struct
+typedef struct Record
 {
     enum task_type type; // enum type
     char *id;       // subject code
@@ -19,7 +19,7 @@ typedef struct
     int duration;   // number of time slot, need to range
 } Record;
 
-typedef struct
+typedef struct Data_record
 {
     Record value[SIZE];
     int count;  //the number of record  in this block
@@ -33,4 +33,5 @@ void add_data(Data_record* block, Record record);
 
 Record next(Data_record* block);
 
+void new_iter(Data_record *block)
 #endif
