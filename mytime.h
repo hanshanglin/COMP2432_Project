@@ -21,6 +21,20 @@ typedef struct
 } Date;
 
 
+Date initDate(int days_since_base, int time_slot){
+    Date sol = (*Date)malloc(sizeof(Date));
+    sol->days_since_base = days_since_base;
+    sol->time_slot = time_slot;
+    return Date;
+};
+
+bool delDate(Date* ptr){
+    if(ptr==NULL)return false;
+    free(ptr);
+    ptr=NULL;
+    return true;
+}
+
 //check valid date "YYYY-MM-DD"
 bool is_valid_date(char* date);
 
@@ -36,5 +50,13 @@ int convert_to_base(char* date);
 //get date_to_realdate
 char* convert_to_date(int num);
 
+//check valid time "hh:00"
+bool is_valid_time(char* time);
+
+//set hh:00 to start time
+bool set_start_time(char* time);
+
+//set hh:00 to end time
+bool set_end_time(char* time);
 
 #endif
