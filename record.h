@@ -25,7 +25,7 @@ typedef struct Data_record
     int count;  //the number of record  in this block
     int ptr;    // the next available record position in record array
     struct Data_record* next;
-}Data_record;
+} Data_record;
 
 
 
@@ -33,5 +33,14 @@ void add_data(Data_record* block, Record record);
 
 Record next(Data_record* block);
 
-void new_iter(Data_record *block)
+void new_iter(Data_record *block);
+
+Record newRecord(task_type type, char* id, Date day, int duration);
+
+void delDataRecord(Data_record* ptr);
+
+void delRecord(Record* ptr);
+
+
+
 #endif

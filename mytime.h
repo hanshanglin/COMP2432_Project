@@ -21,19 +21,9 @@ typedef struct
 } Date;
 
 
-Date initDate(int days_since_base, int time_slot){
-    Date sol = (*Date)malloc(sizeof(Date));
-    sol->days_since_base = days_since_base;
-    sol->time_slot = time_slot;
-    return Date;
-};
+Date newDate(int days_since_base, int time_slot);
 
-bool delDate(Date* ptr){
-    if(ptr==NULL)return false;
-    free(ptr);
-    ptr=NULL;
-    return true;
-}
+bool delDate(Date* ptr);
 
 //check valid date "YYYY-MM-DD"
 bool is_valid_date(char* date);

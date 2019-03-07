@@ -84,3 +84,17 @@ bool set_end_time(char *cur_time)
     end_time = 10 * (cur_time[0] - '0') + (cur_time[1] - '0');
     return true;
 }
+
+Date newDate(int days_since_base, int time_slot){
+    Date sol = (*Date)malloc(sizeof(Date));
+    sol->days_since_base = days_since_base;
+    sol->time_slot = time_slot;
+    return Date;
+};
+
+bool delDate(Date* ptr){
+    if(ptr==NULL)return false;
+    free(ptr);
+    ptr=NULL;
+    return true;
+}
