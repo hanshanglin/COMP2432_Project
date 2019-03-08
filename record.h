@@ -31,11 +31,11 @@ typedef struct Data_record
 
 void add_data(Data_record* block, Record record);
 
-Record next(Data_record* block);
+Record* next(Data_record* block);
 
 void new_iter(Data_record *block);
 
-Record newRecord(task_type type, char* id, Date day, int duration);
+Record* newRecord(task_type type, char* id, Date day, int duration);
 
 void delDataRecord(Data_record* ptr);
 
