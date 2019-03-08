@@ -1,6 +1,11 @@
 #ifndef MYTIME_H_INCLUDED
 #define MYTIME_H_INCLUDED
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 // the period start date "YYYY-MM-DD"
 static char *start_date = NULL; 
@@ -21,7 +26,7 @@ typedef struct
 } Date;
 
 
-Date newDate(int days_since_base, int time_slot);
+Date* newDate(int days_since_base, int time_slot);
 
 bool delDate(Date* ptr);
 

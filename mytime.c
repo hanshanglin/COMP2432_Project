@@ -1,9 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <assert.h>
 #include "mytime.h"
 
 // "YYYY-MM-DD" to store at globol char *start_date
@@ -68,8 +62,7 @@ bool is_valid_time(char *cur_time)
 //set hh:00 to start time
 bool set_start_time(char *cur_time)
 {
-    if (assert(is_valid_time(cur_time)))
-        return false;
+    assert(is_valid_time(cur_time));
 
     start_time = 10 * (cur_time[0] - '0') + (cur_time[1] - '0');
     return true;
@@ -78,15 +71,14 @@ bool set_start_time(char *cur_time)
 //set hh:00 to end time
 bool set_end_time(char *cur_time)
 {
-    if (assert(is_valid_time(cur_time)))
-        return false;
+    assert(is_valid_time(cur_time));
 
     end_time = 10 * (cur_time[0] - '0') + (cur_time[1] - '0');
     return true;
 }
 
 Date* newDate(int days_since_base, int time_slot){
-    Date* sol = (*Date)malloc(sizeof(Date));
+    Date* sol = (Date*)malloc(sizeof(Date));
     sol->days_since_base = days_since_base;
     sol->time_slot = time_slot;
     return sol;
