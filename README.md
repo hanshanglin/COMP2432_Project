@@ -4,7 +4,7 @@
 - [x] hansama boxing time+record  
 - [ ] Jason 算法(FCFS)  
 - [ ] Lza print,log  
-- [ ] Lian case   
+- [x] Lian test case   
 
 ## Input(part 1):
 1. add details (duration,subject,priority,etc)
