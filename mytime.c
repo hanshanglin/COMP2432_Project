@@ -95,6 +95,6 @@ Date newDate(int days_since_base, int time_slot){
 bool delDate(Date* ptr){
     if(ptr==NULL)return false;
     free(ptr);
-    ptr=NULL;
+    //ptr=NULL;
     return true;
 }
