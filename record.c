@@ -41,7 +41,7 @@ Data_record* newDataRecord(void)
     return sol;
 }
 
-Record* newRecord(task_type type, char *id, Date day, int duration)
+Record* newRecord(enum task_type type, char *id, Date day, int duration)
 {
     Record* sol = (Record*)malloc(sizeof(Record));
     sol->type = type;
@@ -56,7 +56,7 @@ void delDataRecord(Data_record *ptr)
     if (ptr == NULL)
         return;
     for (size_t i = 0; i < ptr->count; i++)
-        delRecord((ptr->value)[i]);
+        delRecord(((ptr->value) + i);
     delDataRecord(ptr->next);
     free(ptr);
     //*ptr = NULL;
@@ -66,7 +66,7 @@ void delRecord(Record *ptr)
 {
     if (ptr == NULL)
         return;
-    delDate(ptr->day);
+    //delDate(ptr->day);
     free(ptr);
     //*ptr = NULL;
 }
