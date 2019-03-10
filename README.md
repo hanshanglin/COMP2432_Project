@@ -1,10 +1,11 @@
 # COMP2432_Project
 
 - [ ] 小川 test case+input  
-- [x] hansama boxing time+record  
+- [ ] hansama fix time+record etc al  
 - [ ] Jason 算法(FCFS)  
 - [ ] Lza print,log  
 - [x] Lian test case   
+- [x] hansama boxing time+record  
 
 ## Input(part 1):
 1. add details (duration,subject,priority,etc)
