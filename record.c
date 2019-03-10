@@ -56,7 +56,7 @@ void delDataRecord(Data_record *ptr)
     if (ptr == NULL)
         return;
     for (size_t i = 0; i < ptr->count; i++)
-        delRecord(((ptr->value) + i);
+        delRecord(((ptr->value) + i));
     delDataRecord(ptr->next);
     free(ptr);
     //*ptr = NULL;
