@@ -13,7 +13,7 @@ void add_data(Data_record *block, const Record* record)
         block->next = newDataRecord();
         block = block->next;
     }
-    block->value[block->count++] = record;
+    block->value[block->count++] = *record;
 }
 
 Record* next(Data_record *block)
