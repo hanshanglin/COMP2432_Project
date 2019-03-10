@@ -28,6 +28,7 @@ typedef struct Data_record
 } Data_record;
 
 
+Data_record* newDataRecord(void)
 
 void add_data(Data_record* block,const Record* record);
 
