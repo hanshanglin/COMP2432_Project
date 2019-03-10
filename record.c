@@ -20,7 +20,7 @@ Record* next(Data_record *block)
 {
     while (block->next != NULL && block->ptr == SIZE)
         block = block->next;
-    return block->value[block->ptr++];
+    return &(block->value[block->ptr++]);
 }
 
 void new_iter(Data_record *block)
