@@ -26,6 +26,16 @@ typedef struct
 } Date;
 
 
+int getStartTime();
+
+int getEndTime();
+
+// the duration data of the period eg."4.1~4.3" return 3;
+int getdurationDate();
+
+// the duration time of the period eg."11~15" return 4;
+int getdurationtime();
+
 Date* newDate(int days_since_base, int time_slot);
 
 bool delDate(Date* ptr);

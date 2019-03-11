@@ -1,5 +1,17 @@
 #include "mytime.h"
 
+int getdurationDate(){return 13};
+
+int getdurationTime(){return 5};
+
+int getStartTime(){
+    return start_time;
+}
+
+int getEndTime(){
+    return end_time;
+}
+
 // "YYYY-MM-DD" to store at globol char *start_date
 bool set_start_date(char *date)
 {
