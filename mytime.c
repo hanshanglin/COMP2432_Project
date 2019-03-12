@@ -21,7 +21,7 @@ bool set_start_date(char *date)
     return true;
 }
 
-// "YYYY-MM-DD" to store at globol char *end_date
+// "YYYY-MM-DD" to store at global char *end_date
 bool set_end_date(char *date)
 {
     assert(is_valid_date(date));
@@ -30,12 +30,25 @@ bool set_end_date(char *date)
     return true;
 }
 
-//get date_to_base
+//convert a date "YYYY-MM-DD" to an integer, eg. start Date is "2019-01-10", input "2019-01-15" return 5;
 int convert_to_base(char *date)
 {
     assert(is_valid_date(date) && start_date != NULL);
 
-    //todomark
+    int base_year = strtol(start_date,NULL,10);
+    int base_month = strtol(start_date,NULL,10);
+    int base_day = strtol(start_date,NULL,10);
+    int target_year = strtol(date,NULL,10);
+    int target_month = strtol(date+5,NULL,10);
+    int target_day = strtol(date+8,NULL,10);
+
+    if(base_year>target_year&&base_month>target_month&&base_day>target_day)return -1;
+    int sol = 0;
+    for (int i = base_year ; i <target_year; ++i) {
+        sol+=((i%4==0&&i%100!=0)||i%400==0)?366:365;
+    }
+
+    /*TODO sol - base day + target day*/
     return 0;
 }
 
@@ -43,7 +56,7 @@ int convert_to_base(char *date)
 char *convert_to_date(int num)
 {
 
-    //todomark
+    /*TODO*/
     return NULL;
 }
 

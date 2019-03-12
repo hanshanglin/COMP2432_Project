@@ -4,7 +4,7 @@
 #include "mytime.h"
 #include "record.h"
 
-void add_data(Data_record *block, const Record* record)
+void add_data(Data_record *block, Record* record)
 {
     while (block->next != NULL && block->count == SIZE)
         block = block->next;
@@ -59,14 +59,11 @@ void delDataRecord(Data_record *ptr)
         delRecord(((ptr->value) + i));
     delDataRecord(ptr->next);
     free(ptr);
-    //*ptr = NULL;
 }
 
 void delRecord(Record *ptr)
 {
     if (ptr == NULL)
         return;
-    //delDate(ptr->day);
     free(ptr);
-    //*ptr = NULL;
 }

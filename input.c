@@ -10,7 +10,7 @@
 
 #define MAX_INPUT_SIZE 128
 
-int main(void) {
+int main(void){
 
     printf("   ~~WELCOME TO S3~~\n\n");
     printf("Please enter: ");

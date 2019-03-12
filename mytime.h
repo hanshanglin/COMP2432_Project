@@ -17,7 +17,11 @@ static char *end_date = NULL;
 static int start_time = -1;  
 
 // the period end time "hh" (0~24)
-static int end_time= -1;    
+static int end_time= -1;
+
+int get_day_duration();
+
+int get_time_duration();
 
 typedef struct
 {
@@ -43,16 +47,16 @@ bool delDate(Date* ptr);
 //check valid date "YYYY-MM-DD"
 bool is_valid_date(char* date);
 
-// "YYYY-MM-DD" to store at globol char *end_date 
+// "YYYY-MM-DD" to store at global char *end_date
 bool set_end_date(char* date);
 
-// "YYYY-MM-DD" to store at globol char *start_date 
+// "YYYY-MM-DD" to store at global char *start_date
 bool set_start_date(char* date);
 
 //get date_to_base
 int convert_to_base(char* date);
 
-//get date_to_realdate
+//get date_to_real date
 char* convert_to_date(int num);
 
 //check valid time "hh:00"
