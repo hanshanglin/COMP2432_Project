@@ -41,7 +41,7 @@ Data_record* newDataRecord(void)
     return sol;
 }
 
-Record* newRecord(enum task_type type, char *id, Date day, int duration)
+Record* newRecord(enum task_type type, char *id, Date *day, int duration)
 {
     Record* sol = (Record*)malloc(sizeof(Record));
     sol->type = type;
