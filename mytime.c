@@ -1,8 +1,8 @@
 #include "mytime.h"
 
-int getdurationDate(){return 13};
+int getdurationDate(){return 13;}
 
-int getdurationTime(){return 5};
+int getdurationTime(){return 5;}
 
 int getStartTime(){
     return start_time;
@@ -36,8 +36,8 @@ int convert_to_base(char *date)
     assert(is_valid_date(date) && start_date != NULL);
 
     int base_year = strtol(start_date,NULL,10);
-    int base_month = strtol(start_date,NULL,10);
-    int base_day = strtol(start_date,NULL,10);
+    int base_month = strtol(start_date+5,NULL,10);
+    int base_day = strtol(start_date+8,NULL,10);
     int target_year = strtol(date,NULL,10);
     int target_month = strtol(date+5,NULL,10);
     int target_day = strtol(date+8,NULL,10);
