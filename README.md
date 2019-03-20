@@ -1,6 +1,6 @@
 # COMP2432_Project
 
-- [ ] 小川 test case+input  
+- [x] 小川 test case+input  
 - [ ] hansama fix time+record etc al  
 - [ ] Jason 算法(FCFS)  
 - [ ] Lza print,log  
