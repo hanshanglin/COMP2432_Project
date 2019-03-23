@@ -13,7 +13,7 @@ typedef enum
 
 typedef struct Record
 {
-    enum task_type type; // enum type
+    task_type type; // enum type
     char *id;       // subject code
     Date *day;       // struct pointer Date
     int duration;   // number of time slot, need to range
@@ -36,7 +36,7 @@ Record* next(Data_record* block);
 
 void new_iter(Data_record *block);
 
-Record* newRecord(enum task_type type, char* id, Date *day, int duration);
+Record* newRecord(task_type type, char* id, Date *day, int duration);
 
 void delDataRecord(Data_record* ptr);
 
