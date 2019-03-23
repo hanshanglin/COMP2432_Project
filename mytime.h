@@ -7,11 +7,24 @@
 #include <stdbool.h>
 #include <assert.h>
 
+static int day_in_month[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
+typedef struct {
+    int year;
+    int month;
+    int day;
+    int day_in_year;
+}date;
+int day_in_year(date sol);
+bool is_leap_year(int year);
+
+
+
 // the period start date "YYYY-MM-DD"
-static char *start_date = NULL; 
+static date start_date ;
 
 // the period end date "YYYY-MM-DD"
-static char *end_date = NULL;  
+static date end_date;
 
 // the period start time "hh" (0~24)
 static int start_time = -1;  
@@ -22,6 +35,9 @@ static int end_time= -1;
 int get_day_duration();
 
 int get_time_duration();
+
+// the timeslot of a real time eg. "15:00" with start time "12:00" return 3;
+int convert_to_timeslot(char *ptr);
 
 typedef struct
 {
@@ -45,7 +61,7 @@ Date* newDate(int days_since_base, int time_slot);
 bool delDate(Date* ptr);
 
 //check valid date "YYYY-MM-DD"
-bool is_valid_date(char* date);
+bool is_valid_date_format(char *date);
 
 // "YYYY-MM-DD" to store at global char *end_date
 bool set_end_date(char* date);
@@ -57,10 +73,10 @@ bool set_start_date(char* date);
 int convert_to_base(char* date);
 
 //get date_to_real date
-char* convert_to_date(int num);
+char* convert_to_date(int num,char* target);
 
 //check valid time "hh:00"
-bool is_valid_time(char* time);
+bool is_valid_time_format(char *time);
 
 //set hh:00 to start time
 bool set_start_time(char* time);
