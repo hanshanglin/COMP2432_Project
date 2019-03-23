@@ -144,7 +144,7 @@ int main(void) {
                 else
                     continue;
             }
-            free(line);
+            
 
         } else if (strcmp(split_ptr, "runS3") == 0) {
             /*TODO*/
