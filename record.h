@@ -3,13 +3,13 @@
 #define SIZE 128
 
 //priority Project > Assignment > Revision > Activity
-enum task_type
+typedef enum
 {
     Project,
     Assignment,
     Revision,
     Activity
-};
+}task_type;
 
 typedef struct Record
 {
