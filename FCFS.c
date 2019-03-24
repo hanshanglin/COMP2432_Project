@@ -126,6 +126,7 @@ Record** FCFS(Data_record* input){
         }
         curTask=next(input);
     }
+   log_stop();
     return table;
 }
 
