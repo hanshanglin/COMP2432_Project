@@ -10,7 +10,12 @@
 #include "record.h"
 #include "mytime.h"
 #include <string.h>
+#include "log.c"
 Record** FCFS(Data_record* input){
+   
+   //log system init
+   set_algorithm_name("FCFS");
+   log_start();
    
     int accepted=0;
     int rejected = 0;
@@ -38,10 +43,12 @@ Record** FCFS(Data_record* input){
                 if(assignedSlot==slotsPerDay*period){
                     rejectedList[rejected]=curTask;
                     rejected++;
+                   log_log(curTask,false);
                     break;
                 }
                 
                 else accepted++;
+              log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignedSlot]=curTask;
                     assignedSlot++;
@@ -56,9 +63,11 @@ Record** FCFS(Data_record* input){
                 if(assignedSlot==slotsPerDay*period){
                     rejectedList[rejected]=curTask;
                     rejected++;
+                   log_log(curTask,false);
                     break;
                 }
                 else accepted++;
+              log_log(curTask,true);
                 
                 for(int i =0; i < duration;i++){
                     table[assignedSlot]=curTask;
@@ -77,8 +86,10 @@ Record** FCFS(Data_record* input){
                 if(table[startInTableR]!=NULL || (startSlotR+duration)>slotsPerDay){
                     rejectedList[rejected]=curTask;
                     rejected++;
+                   log_log(curTask,false);
                     break;}
                 accepted++;
+              log_log(curTask,true);
                 
                 for(int i = 0;i<duration;i++){
                     table[assignedSlot]=curTask;
@@ -99,9 +110,11 @@ Record** FCFS(Data_record* input){
                 if(table[startInTableA]!=NULL || (startInTableA+duration)>slotsPerDay){
                     rejectedList[rejected]=curTask;
                     rejected++;
+                   log_log(curTask,false);
                     break;
                 }
                 accepted++;
+              log_log(curTask,true);
                 for(int i = 0;i<duration;i++){
                     table[assignedSlot]=curTask;
                     assignedSlot++;
