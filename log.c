@@ -53,6 +53,10 @@ void log_log(Record* record, bool accepted){
     fprintf(log_file,"%s\n",accepted?"Accepted":"Rejected");
 }
 
+void log_stop(){
+    fclose(log_file);
+}
+
 void print_timetable(Record** table){
     int width=getEndTime()-getStartTime()+1;
     char buf[11];
