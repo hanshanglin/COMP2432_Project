@@ -10,70 +10,83 @@
 #include "record.h"
 #include "mytime.h"
 #include <string.h>
-char** FCFS(Data_record* input){
+Record** FCFS(Data_record* input){
    
+    int accepted=0;
+    int rejected = 0;
+    
     int period = getdurationDate();
     int slotsPerDay = getdurationtime();
-    char** table = malloc(sizeof(char*)*period*slotsPerDay);
+    
+    Record** table = malloc(sizeof(Record*)*period*slotsPerDay);
+    Record** rejectedList=malloc(sizeof(Record*)*period*slotsPerDay);
+    
     new_iter(input);
     Record* curTask = next(input);
-    int curSlot = 0;
     char* course;
     int duration;
+    
     int assignedSlot=0;
-    char* write;
+    
     Date* dateAndTime;
     while(curTask!=NULL){
         task_type type = curTask->type;
         switch(type){
             case Project:
-                course = curTask->id;
-                dateAndTime = curTask->day;
-                int dueP=dateAndTime->days_since_base;
                 duration = curTask->duration;
-                write=malloc(strlen(course)+strlen("Project")+1);
-                strcpy(write, course);
-                strcat(write, "Project");
+                
+                if(assignedSlot==slotsPerDay*period){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    break;
+                }
+                
+                else accepted++;
                 for(int i =0; i < duration;i++){
-                    strcpy(table[assignedSlot], write);
+                    table[assignedSlot]=curTask;
                     assignedSlot++;
                     if(assignedSlot>slotsPerDay*period)
                         return table;
                 }
-                free(write);
-                break;
-            case Assignment:
-                course = curTask->id;
-                dateAndTime = curTask->day;
-                duration = curTask->duration;
-                //int dueA = dateAndTime->days_since_base;
-                for(int i =0; i < duration;i++){
-                    strcpy(table[assignedSlot], course);
-                    assignedSlot++;
-                    if(assignedSlot>slotsPerDay*period)
-                        return table;
-                }
+                
                 break;
             
+            case Assignment:
+                duration = curTask->duration;
+                if(assignedSlot==slotsPerDay*period){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    break;
+                }
+                else accepted++;
+                
+                for(int i =0; i < duration;i++){
+                    table[assignedSlot]=curTask;
+                    assignedSlot++;
+                    if(assignedSlot>slotsPerDay*period)
+                        return table;
+                }
+                break;
+
             case Revision:
-                course = curTask->id;
                 dateAndTime = curTask->day;
                 duration = curTask->duration;
                 int dayR = dateAndTime->days_since_base;
                 int startSlotR = dateAndTime->time_slot;
                 int startInTableR = dayR*slotsPerDay+startSlotR;
-                if(table[startInTableR]!=NULL)
-                    break;
-                write=malloc(strlen(course)+strlen("Revision")+1);
-                strcpy(write, course);
-                strcat(write, "Revision");
+                if(table[startInTableR]!=NULL || (startSlotR+duration)>slotsPerDay){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    break;}
+                accepted++;
+                
                 for(int i = 0;i<duration;i++){
-                    strcpy(table[assignedSlot], write);
+                    table[assignedSlot]=curTask;
                     assignedSlot++;
                     if(assignedSlot>slotsPerDay*period)
                         return table;
                 }
-                free(write);
+
                 break;
                 
             case Activity:
@@ -83,9 +96,14 @@ char** FCFS(Data_record* input){
                 int dayA = dateAndTime->days_since_base;
                 int startSlotA = dateAndTime->time_slot;
                 int startInTableA = dayA*slotsPerDay+startSlotA;
-                if(table[startInTableA]!=NULL) break;
+                if(table[startInTableA]!=NULL || (startInTableA+duration)>slotsPerDay){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    break;
+                }
+                accepted++;
                 for(int i = 0;i<duration;i++){
-                    strcpy(table[assignedSlot], course);
+                    table[assignedSlot]=curTask;
                     assignedSlot++;
                     if(assignedSlot>slotsPerDay*period)
                         return table;
