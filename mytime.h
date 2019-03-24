@@ -50,6 +50,10 @@ int getStartTime();
 
 int getEndTime();
 
+void get_start_date(char* buf);
+
+void get_end_date(char* buf);
+
 // the duration data of the period eg."4.1~4.3" return 3;
 int getdurationDate();
 
