@@ -1,12 +1,12 @@
 #include "mytime.h"
 
 void get_start_date(char* buf){
-    sprintf(target,"%04d-%02d-%02d",start_date.year,start_date.month,start_date.day);
+    sprintf(buf,"%04d-%02d-%02d",start_date.year,start_date.month,start_date.day);
 }
 
 void get_end_date(char* buf){
     
-    sprintf(target,"%04d-%02d-%02d",end_date.year,end_date.month,end_date.day);
+    sprintf(buf,"%04d-%02d-%02d",end_date.year,end_date.month,end_date.day);
 }
 
 
