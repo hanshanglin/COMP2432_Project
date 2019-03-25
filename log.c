@@ -85,6 +85,3 @@ void print_report(int acc,int rej,int slot_used,int slot_num){
     printf("There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc+rej,acc,rej);
     printf("Number of time slots used: %d (%.2f%%)\n",slot_used,(float)slot_used / ((float)slot_num));
 }
-
-
-#endif
