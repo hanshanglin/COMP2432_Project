@@ -45,7 +45,8 @@ Record* newRecord(task_type type, char *id, Date *day, int duration)
 {
     Record* sol = (Record*)malloc(sizeof(Record));
     sol->type = type;
-    sol->id = id;
+    sol->id = (char*)malloc((strlen(id)+1)* sizeof(char));
+    sprintf(sol->id,"%s",id);
     sol->day = day;
     sol->duration = duration;
     return sol;

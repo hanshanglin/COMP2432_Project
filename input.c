@@ -22,12 +22,13 @@ void setPeriod(char *delim, char *split_ptr) {
     set_start_time(split_ptr);/*int*/
     split_ptr = strtok(NULL, delim);/*get the fifth parameter*/
     set_end_time(split_ptr);
+    /*todo bug free*/
+    //printf("start: %d end: %d",getdurationDate(),getdurationtime());
 }
 
 void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
-
 
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
@@ -39,6 +40,8 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Assignment, record_id, date, duration);
+    /*todo test 1*/
+    //printf("day: %d time slot:%d duration: %d, id: %s, type:%d\n",record->day->days_since_base,record->day->time_slot,record->duration,record->id,record->type);
     add_data(dataRecord, record);
 }
 
@@ -150,9 +153,16 @@ int main(void) {
         } else if (strcmp(split_ptr, "runS3") == 0) {
             /*TODO*/
 
-        } else {
+        } else if (strcmp(split_ptr, "debug") == 0){/*TODO*/
+            new_iter(dataRecord);
+            Record *record = NULL;
+            while((record = next(dataRecord))!=NULL)
+                printf("day: %d time slot:%d duration: %d, id: %s, type:%d\n",record->day->days_since_base,record->day->time_slot,record->duration,record->id,record->type);
+        }
+        else {
             printf("Wrong input! Please enter an appropriate task!\n");
         }
+
 
 
         printf("Please enter: ");
