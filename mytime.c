@@ -9,6 +9,9 @@ void get_end_date(char* buf){
     sprintf(buf,"%04d-%02d-%02d",end_date.year,end_date.month,end_date.day);
 }
 
+int getdurationtime(){
+    return end_time-start_time;
+}
 
 int getdurationDate(){
     int sol = end_date.day_in_year-start_date.day_in_year;

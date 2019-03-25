@@ -10,5 +10,9 @@
 #define FCFS_h
 
 #include <stdio.h>
+#include "record.h"
+#include "mytime.h"
+#include <string.h>
+Record** FCFS(Data_record* input);
 
 #endif /* FCFS_h */
