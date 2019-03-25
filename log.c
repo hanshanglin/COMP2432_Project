@@ -60,14 +60,14 @@ void log_stop(){
 }
 
 void print_timetable(Record** table){
-    int width=getEndTime()-getStartTime()+1;
+    int width=getEndTime()-getStartTime();
     char buf[11];
     get_start_date(buf);
     printf("Timetable\nPeriod: %s",buf);
     get_end_date(buf);
     printf(" to %s\nAlgorithm used: %s\n",buf,algo_name);
     printf("Date");
-    for(int i=getStartTime();i<=getEndTime();i++)
+    for(int i=getStartTime();i<getEndTime();i++)
         printf("\t%d:00",i);
     printf("\n");
 
