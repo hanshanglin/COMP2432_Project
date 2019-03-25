@@ -6,7 +6,6 @@
 //  Copyright © 2019 HE Jiashu. All rights reserved.
 //
 
-#include "FCFS.h"
 #include "record.h"
 #include "mytime.h"
 #include <string.h>
