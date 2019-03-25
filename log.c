@@ -1,17 +1,15 @@
-#ifndef LOG_C_INCLUDED
-#define LOG_C_INCLUDED
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include "record.h"
 #include "mytime.h"
+#include "log.h"
 
 static int log_id=1;
 static char *algo_name=NULL;
 static FILE *log_file=NULL;
-static char *start_date_temp=NULL;
+static char *start_date_cache=NULL;
 
 
 const char* type_to_command(task_type type){
@@ -42,13 +40,13 @@ void log_start(){
     fprintf(log_file,"==================================================================");
 
     log_id=1;
-    start_date_temp=(char*)malloc(11);
-    get_start_date(start_date_temp);
+    start_date_cache=(char*)malloc(11);
+    get_start_date(start_date_cache);
 
 }
 
 void log_log(Record* record, bool accepted){
-    fprintf(log_file,"%4d\t%s %s %s ",log_id++,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,start_date_temp));
+    fprintf(log_file,"%4d\t%s %s %s ",log_id++,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,start_date_cache));
     if(record->type==Assignment||record->type==Project)
         fprintf(log_file,"%d\t",record->duration);
     else
