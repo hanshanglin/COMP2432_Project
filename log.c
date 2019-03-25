@@ -1,3 +1,6 @@
+#ifndef LOG_C_INCLUDED
+#define LOG_C_INCLUDED
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +11,8 @@
 static int log_id=1;
 static char *algo_name=NULL;
 static FILE *log_file=NULL;
-static char *start_date=NULL;
+static char *start_date_temp=NULL;
+
 
 const char* type_to_command(task_type type){
     switch(type){
@@ -38,13 +42,13 @@ void log_start(){
     fprintf(log_file,"==================================================================");
 
     log_id=1;
-    start_date=(char*)malloc(11);
-    get_start_date(start_date);
+    start_date_temp=(char*)malloc(11);
+    get_start_date(start_date_temp);
 
 }
 
 void log_log(Record* record, bool accepted){
-    fprintf(log_file,"%4d\t%s %s %s ",log_id++,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,start_date));
+    fprintf(log_file,"%4d\t%s %s %s ",log_id++,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,start_date_temp));
     if(record->type==Assignment||record->type==Project)
         fprintf(log_file,"%d\t",record->duration);
     else
@@ -70,7 +74,7 @@ void print_timetable(Record** table){
     printf("\n");
 
     get_start_date(buf);
-    for(int i=0;i<getDurationDate();i++){
+    for(int i=0;i<getdurationDate();i++){
         printf("%s",convert_to_date(i,buf));
         for(int j=0;j<width;j++)
             printf("\t%s",table[i*width+j]==NULL?"N/A":table[i*width+j]->id);
@@ -81,5 +85,8 @@ void print_timetable(Record** table){
 void print_report(int acc,int rej,int slot_used,int slot_num){
     printf("***Summary Report***\nAlgorithm used: %s\n",algo_name);
     printf("There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc+rej,acc,rej);
-    printf("Number of time slots used: %d (%.2f%%)\n",slot_used,slot_used%((float)slot_num));
+    printf("Number of time slots used: %d (%.2f%%)\n",slot_used,(float)slot_used / ((float)slot_num));
 }
+
+
+#endif

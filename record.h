@@ -2,6 +2,7 @@
 #define RECORD_H_INCLUDED
 #define SIZE 128
 
+#include "mytime.h"
 //priority Project > Assignment > Revision > Activity
 typedef enum
 {

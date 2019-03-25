@@ -7,6 +7,7 @@
 
 #include "mytime.h"
 #include "record.h"
+#include "FCFS.c"
 
 #define MAX_INPUT_SIZE 128
 

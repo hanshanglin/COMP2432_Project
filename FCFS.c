@@ -1,3 +1,6 @@
+#ifndef FCFS_C_INCLUDED
+#define FCFS_C_INCLUDED
+
 //
 //  FCFS.c
 //  OS project
@@ -129,3 +132,4 @@ Record** FCFS(Data_record* input){
     return table;
 }
 
+#endif
