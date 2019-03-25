@@ -132,7 +132,7 @@ char *convert_to_date(int num,char* buf)
     sol.day+=num;
 
     //convert to string
-    sprintf(target,"%04d-%02d-%02d",sol.year,sol.month,sol.day);
+    sprintf(buf,"%04d-%02d-%02d",sol.year,sol.month,sol.day);
     /*TODO test*/
     return buf;
 }
