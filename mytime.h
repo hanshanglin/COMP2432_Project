@@ -32,9 +32,6 @@ static int start_time = -1;
 // the period end time "hh" (0~24)
 static int end_time= -1;
 
-int get_day_duration();
-
-int get_time_duration();
 
 // the timeslot of a real time eg. "15:00" with start time "12:00" return 3;
 int convert_to_timeslot(char *ptr);
