@@ -60,7 +60,7 @@ void log_stop(){
 }
 
 void print_timetable(Record** table){
-    int width=getEndTime()-getStartTime()+1;
+    int width=getEndTime()-getStartTime();
     char buf[11];
     get_start_date(buf);
     printf("Timetable\nPeriod: %s",buf);
