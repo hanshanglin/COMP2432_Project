@@ -158,7 +158,7 @@ bool is_valid_time_format(char *cur_time)
     assert(strlen(cur_time) > 2);
 
     int current_time = 10 * (cur_time[0] - '0') + (cur_time[1] - '0');
-    return (current_time < 0 || current_time > 23);
+    return !(current_time < 0 || current_time > 23);
 }
 
 //set hh:00 to start time
