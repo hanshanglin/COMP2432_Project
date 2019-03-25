@@ -7,7 +7,9 @@
 
 #include "mytime.h"
 #include "record.h"
+#include "log.h"
 #include "FCFS.h"
+
 
 #define MAX_INPUT_SIZE 128
 
@@ -148,9 +150,10 @@ int main(void) {
                 else
                     continue;
             }
-            
+
 
         } else if (strcmp(split_ptr, "runS3") == 0) {
+             print_timetable( FCFS(dataRecord));
             /*TODO*/
 
         } else if (strcmp(split_ptr, "debug") == 0){/*TODO*/
