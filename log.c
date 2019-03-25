@@ -67,7 +67,7 @@ void print_timetable(Record** table){
     get_end_date(buf);
     printf(" to %s\nAlgorithm used: %s\n",buf,algo_name);
     printf("Date");
-    for(int i=getStartTime();i<=getEndTime();i++)
+    for(int i=getStartTime();i<getEndTime();i++)
         printf("\t%d:00",i);
     printf("\n");
 
