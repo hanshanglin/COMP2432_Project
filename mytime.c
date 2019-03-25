@@ -103,7 +103,7 @@ int convert_to_base(char *target_date)
 }
 
 //convert an integer to a date "YYYY-MM-DD", eg. start Date is "2019-01-10", input 5 return "2019-01-15";
-char *convert_to_date(int num,char* target)
+char *convert_to_date(int num,char* buf)
 {
     assert(num >= 0);
     date sol = start_date;
@@ -134,7 +134,7 @@ char *convert_to_date(int num,char* target)
     //convert to string
     sprintf(target,"%04d-%02d-%02d",sol.year,sol.month,sol.day);
     /*TODO test*/
-    return NULL;
+    return buf;
 }
 
 //check valid date "YYYY-MM-DD"
