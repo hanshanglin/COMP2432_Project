@@ -10,6 +10,7 @@
 #include "record.h"
 #include "mytime.h"
 #include <string.h>
+#include <stdlib.h>
 #include "log.h"
 Record** FCFS(Data_record* input){
     set_algorithm_name("FCFS");
@@ -23,6 +24,7 @@ Record** FCFS(Data_record* input){
     
     Record** table = malloc(sizeof(Record*)*period*slotsPerDay);
     Record** rejectedList=malloc(sizeof(Record*)*period*slotsPerDay);
+    memset(table,0,sizeof(Record*)*period*slotsPerDay);
     
     new_iter(input);
     Record* curTask = next(input);
@@ -30,27 +32,26 @@ Record** FCFS(Data_record* input){
     int duration;
     
     int assignedSlot=0;
-    
+    int assignPA=0;
     Date* dateAndTime;
     while(curTask!=NULL){
         task_type type = curTask->type;
         switch(type){
             case Project:
                 duration = curTask->duration;
-                
-                if(assignedSlot==slotsPerDay*period){
+                if(assignPA==slotsPerDay*period){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
                     break;
                 }
-                
                 else accepted++;
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
-                    table[assignedSlot]=curTask;
+                    table[assignPA++]=curTask;
                     assignedSlot++;
-                    if(assignedSlot>slotsPerDay*period)
+                    while(table[assignPA]!=NULL) assignPA++;
+                    if(assignPA>=slotsPerDay*period)
                         return table;
                 }
                 
@@ -58,7 +59,7 @@ Record** FCFS(Data_record* input){
             
             case Assignment:
                 duration = curTask->duration;
-                if(assignedSlot==slotsPerDay*period){
+                if(assignPA==slotsPerDay*period){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -66,11 +67,11 @@ Record** FCFS(Data_record* input){
                 }
                 else accepted++;
                 log_log(curTask,true);
-                
                 for(int i =0; i < duration;i++){
-                    table[assignedSlot]=curTask;
+                    table[assignPA++]=curTask;
                     assignedSlot++;
-                    if(assignedSlot>slotsPerDay*period)
+                    while(table[assignPA]!=NULL) assignPA++;
+                    if(assignPA>=slotsPerDay*period)
                         return table;
                 }
                 break;
@@ -88,14 +89,14 @@ Record** FCFS(Data_record* input){
                     break;}
                 accepted++;
                 log_log(curTask,true);
-                
+                int assignR = startInTableR;
                 for(int i = 0;i<duration;i++){
-                    table[assignedSlot]=curTask;
+                    table[assignR]=curTask;
                     assignedSlot++;
+                    assignR++;
                     if(assignedSlot>slotsPerDay*period)
                         return table;
                 }
-
                 break;
                 
             case Activity:
@@ -113,8 +114,10 @@ Record** FCFS(Data_record* input){
                 }
                 accepted++;
                 log_log(curTask,true);
+                int assignA = startInTableA;
                 for(int i = 0;i<duration;i++){
-                    table[assignedSlot]=curTask;
+                    table[assignA]=curTask;
+                    assignA++;
                     assignedSlot++;
                     if(assignedSlot>slotsPerDay*period)
                         return table;
@@ -123,13 +126,6 @@ Record** FCFS(Data_record* input){
                 
         }
         curTask=next(input);
-    }
-    
-    int cur=0;
-    while(cur<slotsPerDay*period){
-        Record* curPrint = table[cur];
-        printf("%s->", curPrint->id);
-        cur++;
     }
     log_stop();
     
