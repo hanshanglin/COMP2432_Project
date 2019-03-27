@@ -155,6 +155,7 @@ bool is_valid_date_format(char *date)
 //check valid time "hh:00"
 bool is_valid_time_format(char *cur_time)
 {
+
     assert(strlen(cur_time) > 2);
 
     int current_time = 10 * (cur_time[0] - '0') + (cur_time[1] - '0');

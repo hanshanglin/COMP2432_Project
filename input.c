@@ -133,7 +133,11 @@ int main(void) {
             char line[MAX_INPUT_SIZE];
 
             split_ptr = strtok(NULL, delim);/*get file name*/
-            fp = fopen(split_ptr, "r");
+            char temp[30];
+            sprintf(temp,"./%s",split_ptr);
+            printf("split_ptr:%s\n",temp);
+            fp = fopen("C:\\Users\\78705\\Desktop\\COMP2432_Project\\testCase1.txt", "r");
+            printf("%d\n",errno);
 
             while (fgets(line, MAX_INPUT_SIZE, fp) != NULL) {
                 char *word = strtok(line, delim);/*get the first word in each line*/
@@ -142,7 +146,7 @@ int main(void) {
                 else if (strcmp(word, "addAssignment") == 0)
                     addAssignment(dataRecord, delim, word);
                 else if (strcmp(word, "addProject") == 0)
-                    addAssignment(dataRecord, delim, word);
+                    addProject(dataRecord, delim, word);
                 else if (strcmp(word, "addRevision") == 0)
                     addRevision(dataRecord, delim, word);
                 else if (strcmp(word, "addActivity") == 0)
