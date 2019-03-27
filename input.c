@@ -16,10 +16,10 @@
 void setPeriod(char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get the second parameter*/
     set_start_date(split_ptr);/*char */
-    
+
     split_ptr = strtok(NULL, delim);/*get the third parameter*/
     set_end_date(split_ptr);
-    
+
     split_ptr = strtok(NULL, delim);/*get the fourth parameter*/
     set_start_time(split_ptr);/*int*/
     split_ptr = strtok(NULL, delim);/*get the fifth parameter*/
@@ -31,16 +31,16 @@ void setPeriod(char *delim, char *split_ptr) {
 void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
-    
+
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
-    
+
     split_ptr = strtok(NULL, delim);/*get duration, 4th para*/
     int duration = atoi(split_ptr);
-    
+
     Record *record = newRecord(Assignment, record_id, date, duration);
     /*todo test 1*/
     //printf("day: %d time slot:%d duration: %d, id: %s, type:%d\n",record->day->days_since_base,record->day->time_slot,record->duration,record->id,record->type);
@@ -50,16 +50,16 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
 void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
-    
+
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
-    
+
     split_ptr = strtok(NULL, delim);/*get duration, 4th para*/
     int duration = atoi(split_ptr);
-    
+
     Record *record = newRecord(Project, record_id, date, duration);
     add_data(dataRecord, record);
 }
@@ -67,19 +67,19 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
 void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
-    
+
     split_ptr = strtok(NULL, delim);/*get starting date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
-    
-    
+
+
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
-    
+
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
-    
+
     Record *record = newRecord(Revision, record_id, date, duration);
     add_data(dataRecord, record);
 }
@@ -87,34 +87,34 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
 void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
-    
+
     split_ptr = strtok(NULL, delim);/*get starting date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
-    
+
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
-    
+
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
-    
+
     Record *record = newRecord(Activity, record_id, date, duration);
     add_data(dataRecord, record);
-    
+
 }
 
 int main(void) {
-    
+
     printf("   ~~WELCOME TO S3~~\n\n");
     printf("Please enter: ");
     char *user_input = malloc(MAX_INPUT_SIZE);
     fgets(user_input, MAX_INPUT_SIZE, stdin);
-    
+
     Data_record *dataRecord = newDataRecord();
-    
+
     while (strcmp(user_input, "exitS3\n") != 0) {
-        
+
         /*parsing the string input by user*/
         char delim[] = " ";/*splitting key*/
         char *split_ptr = strtok(user_input, delim);/*get the first word*/
@@ -131,9 +131,14 @@ int main(void) {
         } else if (strcmp(split_ptr, "addBatch") == 0) {
             FILE *fp;
             char line[MAX_INPUT_SIZE];
-            
+
             split_ptr = strtok(NULL, delim);/*get file name*/
-            fp = fopen(split_ptr, "r");
+            char temp[30];
+            sprintf(temp,"./%s",split_ptr);
+            printf("split_ptr:%s\n",temp);
+            fp = fopen("C:\\Users\\78705\\Desktop\\COMP2432_Project\\testCase1.txt", "r");
+            printf("%d\n",errno);
+
             while (fgets(line, MAX_INPUT_SIZE, fp) != NULL) {
                 char *word = strtok(line, delim);/*get the first word in each line*/
                 if (strcmp(word, "addPeriod") == 0)
@@ -149,13 +154,13 @@ int main(void) {
                 else
                     continue;
             }
-            
-            
+
+
         } else if (strcmp(split_ptr, "runS3") == 0) {
             print_timetable( FCFS(dataRecord));
             print_report(0,0,0,0);
             /*TODO*/
-            
+
         } else if (strcmp(split_ptr, "debug") == 0){/*TODO*/
             new_iter(dataRecord);
             Record *record = NULL;
@@ -165,16 +170,16 @@ int main(void) {
         else {
             printf("Wrong input! Please enter an appropriate task!\n");
         }
-        
-        
-        
+
+
+
         printf("Please enter: ");
         fgets(user_input, MAX_INPUT_SIZE, stdin);
-        
+
     }
-    
-    
+
+
     free(user_input);
     printf("Byebye~");
-    
+
 }
