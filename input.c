@@ -142,7 +142,7 @@ int main(void) {
                 else if (strcmp(word, "addAssignment") == 0)
                     addAssignment(dataRecord, delim, word);
                 else if (strcmp(word, "addProject") == 0)
-                    addAssignment(dataRecord, delim, word);
+                    addProject(dataRecord, delim, word);
                 else if (strcmp(word, "addRevision") == 0)
                     addRevision(dataRecord, delim, word);
                 else if (strcmp(word, "addActivity") == 0)
