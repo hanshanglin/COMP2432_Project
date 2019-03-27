@@ -45,7 +45,7 @@ int getEndTime(){
 int day_in_year(date sol) {
     int day = 0;
     day+=sol.day-1;
-    for (int i = 0; i < sol.month; ++i) {
+    for (int i = 0; i < sol.month-1; ++i) {
         day += day_in_month[i];
         if (i == 1 && is_leap_year(sol.year))++day;
     }
@@ -125,6 +125,7 @@ char *convert_to_date(int num,char* buf)
             if(num<29)break;
             num-=(day_in_month[sol.month-1]+1);
             sol.month++;
+            continue;
         }
         num-=day_in_month[sol.month-1];
         sol.month++;
