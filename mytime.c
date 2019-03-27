@@ -23,7 +23,7 @@ int getdurationDate(){
             sol+=366;
         }
     }
-    return sol;
+    return sol+1;
 };
 
 int convert_to_timeslot(char *ptr){

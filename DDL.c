@@ -12,5 +12,20 @@ Record** DDL(Data_record* input){
     memset(bit,0, sizeof(bit));
     int detect = (int)pow((float)2,(float)DDL_period);
 
+    Record* cur = NULL;
+    new_iter(input);
+    while((cur = next(input))!=NULL) {
+        switch (cur->type){
+            case Project:
+                break;
+            case Assignment:
+                break;
+            case Revision:
+                break;
+            case Activity:
+                break;
+        }
+
+    }
 
 }

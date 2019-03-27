@@ -133,11 +133,7 @@ int main(void) {
             char line[MAX_INPUT_SIZE];
 
             split_ptr = strtok(NULL, delim);/*get file name*/
-            char temp[30];
-            sprintf(temp,"./%s",split_ptr);
-            printf("split_ptr:%s\n",temp);
-            fp = fopen("C:\\Users\\78705\\Desktop\\COMP2432_Project\\testCase1.txt", "r");
-            printf("%d\n",errno);
+            fp = fopen(split_ptr, "r");
 
             while (fgets(line, MAX_INPUT_SIZE, fp) != NULL) {
                 char *word = strtok(line, delim);/*get the first word in each line*/
