@@ -9,8 +9,9 @@
 static int log_id=1;
 static char *algo_name=NULL;
 static FILE *log_file=NULL;
-static char *start_date_cache=NULL;
+static char _log_date_buf[11];
 
+static Data_record* rejected_tasks=NULL;
 
 const char* type_to_command(task_type type){
     switch(type){
@@ -34,25 +35,25 @@ void log_start(){
     sprintf(filename,"S3_%s.log",algo_name);
     log_file=fopen(filename,"w");
     free(filename);
-
+    
     fprintf(log_file,"****Log File - %s***\n",algo_name);
     fprintf(log_file,"ID\tEvent\t\t\t\t\tAccepted/Rejected\n");
     fprintf(log_file,"==================================================================");
-
+    
     log_id=1;
-    start_date_cache=(char*)malloc(11);
-    get_start_date(start_date_cache);
-
+    rejected_tasks=newDataRecord();
 }
 
 void log_log(Record* record, bool accepted){
-    fprintf(log_file,"%4d\t%s %s %s ",log_id++,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,start_date_cache));
+    fprintf(log_file,"%4d\t%s %s %s ",log_id++,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,_log_date_buf));
     if(record->type==Assignment||record->type==Project)
         fprintf(log_file,"%d\t",record->duration);
     else
         fprintf(log_file,"%d:00 %d\t",record->day->time_slot+getStartTime(),record->duration);
-
+    
     fprintf(log_file,"%s\n",accepted?"Accepted":"Rejected");
+    
+    if(!accepted) add_data(rejected_tasks,record);
 }
 
 void log_stop(){
@@ -61,7 +62,7 @@ void log_stop(){
 
 void print_timetable(Record** table){
     int width=getEndTime()-getStartTime();
-    char buf[11];
+    char *buf=_log_date_buf;
     get_start_date(buf);
     printf("Timetable\nPeriod: %s",buf);
     get_end_date(buf);
@@ -70,7 +71,7 @@ void print_timetable(Record** table){
     for(int i=getStartTime();i<getEndTime();i++)
         printf("\t%d:00",i);
     printf("\n");
-
+    
     get_start_date(buf);
     for(int i=0;i<getdurationDate();i++){
         printf("%s",convert_to_date(i,buf));
@@ -84,4 +85,11 @@ void print_report(int acc,int rej,int slot_used,int slot_num){
     printf("***Summary Report***\nAlgorithm used: %s\n",algo_name);
     printf("There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc+rej,acc,rej);
     printf("Number of time slots used: %d (%.2f%%)\n",slot_used,(float)slot_used / ((float)slot_num));
+    
+    printf("The following task(s) will be rejected:\n");
+    new_iter(rejected_tasks);
+    for(Record* rec=next(rejected_tasks);rec!=NULL;rec=next(rejected_tasks))
+        printf("%s %s\n",type_to_command(rec->type),rec->id);
+    
+    free(rejected_tasks);
 }
