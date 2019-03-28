@@ -1,6 +1,7 @@
 CXX = gcc
+CC = gcc
 CXXFLAGS = -Wall -Werror -Wextra -pedantic -std=c99 -g -fsanitize=address
-LDFLAGS =  -fsanitize=address
+CFLAGS = -std=c99
 
 OBJ = input.o log.o FCFS.o mytime.o record.o
 EXEC = projectS3
