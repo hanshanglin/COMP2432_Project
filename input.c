@@ -15,6 +15,7 @@
 
 void setPeriod(char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get the second parameter*/
+
     set_start_date(split_ptr);/*char */
 
     split_ptr = strtok(NULL, delim);/*get the third parameter*/
@@ -24,13 +25,12 @@ void setPeriod(char *delim, char *split_ptr) {
     set_start_time(split_ptr);/*int*/
     split_ptr = strtok(NULL, delim);/*get the fifth parameter*/
     set_end_time(split_ptr);
-    /*todo bug free*/
-    //printf("start: %d end: %d",getdurationDate(),getdurationtime());
 }
 
 void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
+
 
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
@@ -42,8 +42,6 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Assignment, record_id, date, duration);
-    /*todo test 1*/
-    //printf("day: %d time slot:%d duration: %d, id: %s, type:%d\n",record->day->days_since_base,record->day->time_slot,record->duration,record->id,record->type);
     add_data(dataRecord, record);
 }
 
@@ -110,10 +108,11 @@ int main(void) {
     printf("Please enter: ");
     char *user_input = malloc(MAX_INPUT_SIZE);
     fgets(user_input, MAX_INPUT_SIZE, stdin);
+    user_input[strlen(user_input) - 1] = ' ';
 
     Data_record *dataRecord = newDataRecord();
 
-    while (strcmp(user_input, "exitS3\n") != 0) {
+    while (strcmp(user_input, "exitS3 ") != 0) {
 
         /*parsing the string input by user*/
         char delim[] = " ";/*splitting key*/
@@ -129,14 +128,23 @@ int main(void) {
         } else if (strcmp(split_ptr, "addActivity") == 0) {
             addActivity(dataRecord, delim, split_ptr);
         } else if (strcmp(split_ptr, "addBatch") == 0) {
-            FILE *fp;
+
             char line[MAX_INPUT_SIZE];
 
             split_ptr = strtok(NULL, delim);/*get file name*/
-            fp = fopen(split_ptr, "r");
 
-            while (fgets(line, MAX_INPUT_SIZE, fp) != NULL) {
+            FILE *fp = fopen("C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase1.txt",
+                             "r");
+            //FILE *fp = fopen(split_ptr,"r");
+            if (fp == NULL) {
+                printf("Could not open file %s", split_ptr);
+                return 1;
+            }
+
+            while (fgets(line, MAX_INPUT_SIZE, (FILE *) fp) != NULL) {
+
                 char *word = strtok(line, delim);/*get the first word in each line*/
+
                 if (strcmp(word, "addPeriod") == 0)
                     setPeriod(delim, word);
                 else if (strcmp(word, "addAssignment") == 0)
@@ -148,29 +156,23 @@ int main(void) {
                 else if (strcmp(word, "addActivity") == 0)
                     addActivity(dataRecord, delim, word);
                 else
-                    continue;
+                    break;
             }
+            fclose(fp);
 
 
         } else if (strcmp(split_ptr, "runS3") == 0) {
-            print_timetable( FCFS(dataRecord));
-            print_report(0,0,0,0);
+            print_timetable(FCFS(dataRecord));
             /*TODO*/
 
-        } else if (strcmp(split_ptr, "debug") == 0){/*TODO*/
-            new_iter(dataRecord);
-            Record *record = NULL;
-            while((record = next(dataRecord))!=NULL)
-                printf("day: %d time slot:%d duration: %d, id: %s, type:%d\n",record->day->days_since_base,record->day->time_slot,record->duration,record->id,record->type);
-        }
-        else {
+        } else {
             printf("Wrong input! Please enter an appropriate task!\n");
         }
 
 
-
         printf("Please enter: ");
         fgets(user_input, MAX_INPUT_SIZE, stdin);
+        user_input[strlen(user_input) - 1] = ' ';
 
     }
 
