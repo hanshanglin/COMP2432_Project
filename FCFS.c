@@ -7,11 +7,7 @@
 //
 
 #include "FCFS.h"
-#include "record.h"
-#include "mytime.h"
-#include <string.h>
-#include <stdlib.h>
-#include "log.h"
+
 Record** FCFS(Data_record* input){
     set_algorithm_name("FCFS");
     log_start();

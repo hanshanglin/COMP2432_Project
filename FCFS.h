@@ -11,8 +11,10 @@
 
 #include <stdio.h>
 #include "record.h"
+#include "log.h"
 #include "mytime.h"
 #include <string.h>
+#include <stdlib.h>
 Record** FCFS(Data_record* input);
 
 #endif /* FCFS_h */
