@@ -2,7 +2,7 @@
 
 - [x] 小川 test case+input  
 - [ ] hansama fix time+record etc al  
-- [ ] Jason 算法(FCFS)  
+- [x] Jason 算法(FCFS)  
 - [ ] Lza print,log  
 - [x] Lian test case   
 - [x] hansama boxing time+record  
