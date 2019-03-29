@@ -13,6 +13,14 @@
 
 #define MAX_INPUT_SIZE 128
 
+/*this function is used to handle the date that is out of the range*/
+int input_error_handler(int date_in_base) {/*return 0 if error happens, 1 othrewise*/
+    if (date_in_base > 0 && date_in_base < getdurationDate())
+        return 1;
+    else
+        return 0;
+}
+
 void setPeriod(char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get the second parameter*/
 
@@ -35,6 +43,8 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
+    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
+
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
 
@@ -42,6 +52,12 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Assignment, record_id, date, duration);
+    if (flag == 0){
+        char msg[] = "Date out of range!";
+        log_error(record,msg);
+        return;/*end*/
+    }
+
     add_data(dataRecord, record);
 }
 
@@ -52,6 +68,8 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
+    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
+
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
 
@@ -59,6 +77,11 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Project, record_id, date, duration);
+    if (flag == 0){
+        char msg[] = "Date out of range!";
+        log_error(record,msg);
+        return;/*end*/
+    }
     add_data(dataRecord, record);
 }
 
@@ -69,6 +92,8 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get starting date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
+    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
+
 
 
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
@@ -79,16 +104,23 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Revision, record_id, date, duration);
+    if (flag == 0){
+        char msg[] = "Date out of range!";
+        log_error(record,msg);
+        return;/*end*/
+    }
     add_data(dataRecord, record);
 }
 
-void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
+void addActivity(Data_record *dataRecord, char *delim, char *split_ptr)  {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
 
     split_ptr = strtok(NULL, delim);/*get starting date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
+    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
+
 
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);/*Time slot Not Applicable Here*/
@@ -98,9 +130,15 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Activity, record_id, date, duration);
+    if (flag == 0){
+        char msg[] = "Date out of range!";
+        log_error(record,msg);
+        return;/*end*/
+    }
     add_data(dataRecord, record);
 
 }
+
 
 int main(void) {
 
@@ -133,7 +171,7 @@ int main(void) {
 
             split_ptr = strtok(NULL, delim);/*get file name*/
 
-            FILE *fp = fopen("C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase1.txt",
+            FILE *fp = fopen("C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
                              "r");
             //FILE *fp = fopen(split_ptr,"r");
             if (fp == NULL) {
@@ -145,7 +183,7 @@ int main(void) {
 
                 char *word = strtok(line, delim);/*get the first word in each line*/
 
-                if (strcmp(word, "addPeriod") == 0)
+                if (strcmp(word, "addPeriod") == 0)/*if setPeriod more than once, take the last one as real*/
                     setPeriod(delim, word);
                 else if (strcmp(word, "addAssignment") == 0)
                     addAssignment(dataRecord, delim, word);
