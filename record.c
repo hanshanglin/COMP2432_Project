@@ -41,7 +41,7 @@ Data_record* newDataRecord(void)
     return sol;
 }
 
-int getDDl(Record * cur){
+int getDDL(Record * cur){
     if (cur == NULL)return -1;
     else    return cur->day->days_since_base*24+cur->day->time_slot;
 }

@@ -29,7 +29,7 @@ typedef struct Data_record
     struct Data_record* next;
 } Data_record;
 
-int getDDl(Record *);
+int getDDL(Record *);
 
 Data_record* newDataRecord(void);
 
