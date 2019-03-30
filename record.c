@@ -41,6 +41,11 @@ Data_record* newDataRecord(void)
     return sol;
 }
 
+int getDDL(Record * cur){
+    if (cur == NULL)return -1;
+    else    return cur->day->days_since_base*24+cur->day->time_slot;
+}
+
 Record* newRecord(task_type type, char *id, Date *day, int duration)
 {
     Record* sol = (Record*)malloc(sizeof(Record));
@@ -49,6 +54,7 @@ Record* newRecord(task_type type, char *id, Date *day, int duration)
     sprintf(sol->id,"%s",id);
     sol->day = day;
     sol->duration = duration;
+    sol->excuted=0;
     return sol;
 }
 

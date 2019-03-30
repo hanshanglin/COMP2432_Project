@@ -1,14 +1,15 @@
 #ifndef RECORD_H_INCLUDED
 #define RECORD_H_INCLUDED
 #define SIZE 128
+
 #include "mytime.h"
 //priority Project > Assignment > Revision > Activity
 typedef enum
 {
-    Project,
-    Assignment,
-    Revision,
-    Activity
+    Project=4,
+    Assignment=3,
+    Revision=2,
+    Activity=1
 }task_type;
 
 typedef struct Record
@@ -17,6 +18,7 @@ typedef struct Record
     char *id;       // subject code
     Date *day;       // struct pointer Date
     int duration;   // number of time slot, need to range
+    int excuted;    //number of time slots excuted
 } Record;
 
 typedef struct Data_record
@@ -27,6 +29,7 @@ typedef struct Data_record
     struct Data_record* next;
 } Data_record;
 
+int getDDL(Record *);
 
 Data_record* newDataRecord(void);
 
