@@ -49,6 +49,7 @@ Record* newRecord(task_type type, char *id, Date *day, int duration)
     sprintf(sol->id,"%s",id);
     sol->day = day;
     sol->duration = duration;
+    sol->excuted=0;
     return sol;
 }
 
