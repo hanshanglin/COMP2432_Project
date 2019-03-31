@@ -3,6 +3,7 @@
 
 #include "record.h"
 #include "mytime.h"
+#include "log.h"
 
 Record** DDL(Data_record* input);
 #endif //COMP2432_PROJECT_DDL_H
