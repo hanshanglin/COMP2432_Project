@@ -129,24 +129,22 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);
     int flag = input_error_handler(days_since_base, time_slot);/*if out of range, flag = 0; 1 otherwise*/
-printf("%s days_since_base=%d time_slot=%d getdurationDate=%d %d\n",record_id,days_since_base,time_slot,getdurationDate(),(days_since_base >= 0 && days_since_base < getdurationDate()));
-printf("flag=%d\n",flag);    
+ 
 Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Activity, record_id, date, duration);
-printf("flag=%d\n",flag);
-printf("hahah\n");
-flag=1;
-    if (!flag) {
-printf("triggered");
+
+
+    if (flag==0) {
+
         char msg[] = "Date out of range!";
         log_error(record, msg);
         return;
-    }else printf("Else");
-printf("added\n");
+    }
+
     add_data(dataRecord, record);
 
 }
