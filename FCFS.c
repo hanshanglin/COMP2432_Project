@@ -31,6 +31,7 @@ Record** FCFS(Data_record* input){
     char* course;
     int duration;
     Date* DDL;
+    int intDDL;
     int assignedSlot=0;
     int assignPA=0;
     Date* dateAndTime;
@@ -39,6 +40,13 @@ Record** FCFS(Data_record* input){
         switch(type){
             case Project:
                 while(table[assignPA]!=NULL) assignPA++;
+                intDDL = getDDL(curTask);
+                if(assignPA>intDDL){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    log_log(curTask,false);
+                    break;
+                }
                 duration = curTask->duration;
                 DDL = curTask->day;
                 if(assignPA==slotsPerDay*period){
@@ -62,6 +70,13 @@ Record** FCFS(Data_record* input){
             
             case Assignment:
                 while(table[assignPA]!=NULL) assignPA++;
+                intDDL = getDDL(curTask);
+                if(assignPA>intDDL){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    log_log(curTask,false);
+                    break;
+                }
                 DDL = curTask->day;
                 duration = curTask->duration;
                 if(assignPA==slotsPerDay*period){
