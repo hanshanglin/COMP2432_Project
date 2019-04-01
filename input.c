@@ -13,6 +13,8 @@
 #include "log.h"
 #include "FCFS.h"
 #include "DDL.h"
+#include "list.h"
+#include "Priority.h"
 
 #define MAX_INPUT_SIZE 128
 
@@ -225,8 +227,11 @@ int main(void) {
                         split_ptr = strtok(NULL, delim);/*get output file name, 3rd para*/
                         char *output_file_name = split_ptr;
                         if (strcmp(algorithm_name, "Priority") == 0) {
-                            // print_timetable(Priority(dataRecord), output_file_name);
-                        } else if (strcmp(algorithm_name, "FCFS") == 0) {
+                            print_timetable(Priority(dataRecord,0), output_file_name);
+                        } else if(strcmp(algorithm_name,"Deadline")==0){
+                            print_timetable(Priority(dataRecord,1),output_file_name);
+                        }
+                        else if (strcmp(algorithm_name, "FCFS") == 0) {
                             print_timetable(FCFS(dataRecord), output_file_name);
                             print_report(output_file_name);
                         } else if (strcmp(algorithm_name, "SDDL") == 0) {
