@@ -7,7 +7,12 @@
 //
 
 #include "Priority.h"
-
+#include "record.h"
+#include "mytime.h"
+#include <string.h>
+#include <stdlib.h>
+#include "log.h"
+#include "list.h"
 Record** Priority(Data_record* input, int mode){
     //mode 0 is priority, mode 1 is DDL
     
@@ -37,18 +42,17 @@ Record** Priority(Data_record* input, int mode){
     printf("Insertion starts\n");
     while(curTask != NULL){
         insert(&head, newNode(curTask), mode);
-        printList(head);
         curTask = next(input);
     }
     
     printf("Insertion passed.\n");
-    struct Node* curNode = head;
-    curTask = curNode->task;
+    curTask = head->task;
     
-    while(curNode!=NULL){
+    while(head!=NULL){
         task_type type = curTask->type;
         switch(type){
             case Project:
+                while(table[assignPA]!=NULL) assignPA++;
                 duration = curTask->duration;
                 DDL = curTask->day;
                 if(assignPA==slotsPerDay*period){
@@ -71,6 +75,7 @@ Record** Priority(Data_record* input, int mode){
                 break;
                 
             case Assignment:
+                while(table[assignPA]!=NULL) assignPA++;
                 DDL = curTask->day;
                 duration = curTask->duration;
                 if(assignPA==slotsPerDay*period){
@@ -140,8 +145,8 @@ Record** Priority(Data_record* input, int mode){
                 break;
                 
         }
-        curNode=curNode->next;
-        curTask=curNode->task;
+        head=head->next;
+        curTask=head->task;
     }
     log_stop();
     return table;
