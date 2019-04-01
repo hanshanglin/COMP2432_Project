@@ -185,10 +185,10 @@ int main(void) {
 
                     split_ptr = strtok(NULL, delim);/*get file name*/
 
-                    FILE *fp = fopen(
+                    /*FILE *fp = fopen(
                             "C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
-                            "r");
-                    /*FILE *fp = fopen(split_ptr,"r");*/
+                            "r");*/
+                    FILE *fp = fopen(split_ptr,"r");
                     if (fp == NULL) {
                         printf("Could not open file %s", split_ptr);
                         return 1;
