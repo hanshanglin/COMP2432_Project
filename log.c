@@ -73,11 +73,22 @@ void log_log(Record* record, bool accepted){
 }
 
 void log_error(Record* record, char* msg){
+    printf("%p\n",record);
     fprintf(err_file,"[Error] %s <%s %s %s ",msg,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,_log_date_buf));
-    if(record->type==Assignment||record->type==Project)
+    printf("%p\n",record);
+    if(record->type==Assignment||record->type==Project){
+        printf("1-1\n");
         fprintf(log_file,"%d>\n",record->duration);
-    else
+        printf("1-2\n");
+    }
+
+    else{
+        printf("2-1\n");
         fprintf(log_file,"%02d:00 %d>\n",record->day->time_slot+getStartTime(),record->duration);
+        printf("2-2\n");
+    }
+
+    printf("%p\n",record);
 }
 
 void log_stop(){

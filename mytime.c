@@ -32,8 +32,6 @@ int convert_to_timeslot(char *ptr){
     return (10 * (ptr[0] - '0') + (ptr[1] - '0')) - start_time;
 }
 
-int getdurationTime(){return end_time-start_time;};
-
 int getStartTime(){
     return start_time;
 }
@@ -97,7 +95,7 @@ int convert_to_base(char *target_date)
         for (int i = target.year; i < start_date.year; ++i) {
             sol+=is_leap_year(i)?366:365;
         }
-        sol = -sol+start_date.day_in_year-day_in_year(target);
+        sol = -sol-start_date.day_in_year+day_in_year(target);
     }else{
         for (int i = start_date.year ; i <target.year; ++i)
             sol+=is_leap_year(i)?366:365;

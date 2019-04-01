@@ -13,6 +13,7 @@
 #include "log.h"
 #include "FCFS.h"
 #include "DDL.h"
+#include "Priority.h"
 
 
 #define MAX_INPUT_SIZE 128
