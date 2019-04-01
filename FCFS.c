@@ -7,7 +7,11 @@
 //
 
 #include "FCFS.h"
-
+#include "record.h"
+#include "mytime.h"
+#include <string.h>
+#include <stdlib.h>
+#include "log.h"
 Record** FCFS(Data_record* input){
     set_algorithm_name("FCFS");
     log_start();
@@ -44,6 +48,7 @@ Record** FCFS(Data_record* input){
                 }
                 else accepted++;
                 log_log(curTask,true);
+                while(table[assignPA]!=NULL) assignPA++;
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
                     if(assignPA > DDL->days_since_base*slotsPerDay) break;
@@ -66,6 +71,7 @@ Record** FCFS(Data_record* input){
                 }
                 else accepted++;
                 log_log(curTask,true);
+                while(table[assignPA]!=NULL) assignPA++;
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
                     if(assignPA > DDL->days_since_base*slotsPerDay) break;
