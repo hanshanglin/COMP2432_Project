@@ -3,7 +3,7 @@
 #include<string.h>
 #include<unistd.h>
 #include<fcntl.h>
-#include<sys/stat.h>
+#include<sys/wait.h>
 
 #define  _CRT_SECURE_NO_WARNINGS
 #pragma warning(dsiable:4996)
