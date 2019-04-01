@@ -41,7 +41,7 @@ Record** FCFS(Data_record* input){
             case Project:
                 while(table[assignPA]!=NULL) assignPA++;
                 intDDL = getDDL(curTask);
-                if(assignPA>intDDL){
+                if(assignPA>=intDDL){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -59,7 +59,7 @@ Record** FCFS(Data_record* input){
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
-                    if(assignPA > DDL->days_since_base*slotsPerDay) break;
+                    if(assignPA>=intDDL) break;
                     assignedSlot++;
                     while(table[assignPA]!=NULL) assignPA++;
                     if(assignPA>=slotsPerDay*period)
@@ -71,7 +71,7 @@ Record** FCFS(Data_record* input){
             case Assignment:
                 while(table[assignPA]!=NULL) assignPA++;
                 intDDL = getDDL(curTask);
-                if(assignPA>intDDL){
+                if(assignPA>=intDDL){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -89,7 +89,7 @@ Record** FCFS(Data_record* input){
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
-                    if(assignPA > DDL->days_since_base*slotsPerDay) break;
+                    if(assignPA>=intDDL) break;
                     assignedSlot++;
                     while(table[assignPA]!=NULL) assignPA++;
                     if(assignPA>=slotsPerDay*period)
