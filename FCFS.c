@@ -87,8 +87,19 @@ Record** FCFS(Data_record* input){
                 duration = curTask->duration;
                 int dayR = dateAndTime->days_since_base;
                 int startSlotR = dateAndTime->time_slot;
-                int startInTableR = dayR*slotsPerDay+startSlotR;
-                if(table[startInTableR]!=NULL || (startSlotR+duration)>slotsPerDay){
+                int startInTableR = (dayR-1)*slotsPerDay+startSlotR;
+                int ableR=1;
+                if(startSlotR+duration>slotsPerDay)
+                    ableR=0;
+                else{
+                    for(int i = 0; i < duration;i++){
+                        if(table[startInTableR+i]!=NULL){
+                            ableR=0;
+                            break;
+                        }
+                    }
+                }
+                if(ableR==0){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -111,8 +122,20 @@ Record** FCFS(Data_record* input){
                 duration=curTask->duration;
                 int dayA = dateAndTime->days_since_base;
                 int startSlotA = dateAndTime->time_slot;
-                int startInTableA = dayA*slotsPerDay+startSlotA;
-                if(table[startInTableA]!=NULL || (startInTableA+duration)>slotsPerDay){
+                int startInTableA = (dayA-1)*slotsPerDay+startSlotA;
+                int ableA=1;
+                if(startSlotA+duration>slotsPerDay)
+                    ableA=0;
+                else{
+                    for(int i = 0; i < duration;i++){
+                        if(table[startInTableA+i]!=NULL){
+                            ableA=0;
+                            break;
+                        }
+                    }
+                }
+                
+                if(ableA==0){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
