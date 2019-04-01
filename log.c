@@ -111,7 +111,7 @@ void print_timetable(Record** table, char* filename){
         printf("%s",buf);fprintf(out,"%s",buf);
         for(int j=0;j<width;j++){
             if(table[i*width+j]==NULL){
-                str=&"N/A";
+                str="N/A";
             }else{
                 str=table[i*width+j]->id;
                 slot_occupied++;
