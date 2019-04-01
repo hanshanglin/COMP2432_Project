@@ -32,20 +32,17 @@ Record** Priority(Data_record* input, int mode){
     Record* curTask = next(input);
     char* course;
     int duration;
+    int intDDL;
     Date* DDL;
     int assignedSlot=0;
     int assignPA=0;
     Date* dateAndTime;
     
     struct Node* head = NULL;
-    
-    printf("Insertion starts\n");
     while(curTask != NULL){
         insert(&head, newNode(curTask), mode);
         curTask = next(input);
     }
-    
-    printf("Insertion passed.\n");
     curTask = head->task;
     
     while(head!=NULL){
@@ -53,6 +50,13 @@ Record** Priority(Data_record* input, int mode){
         switch(type){
             case Project:
                 while(table[assignPA]!=NULL) assignPA++;
+                intDDL = getDDL(curTask);
+                if(assignPA>=intDDL){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    log_log(curTask,false);
+                    break;
+                }
                 duration = curTask->duration;
                 DDL = curTask->day;
                 if(assignPA==slotsPerDay*period){
@@ -65,7 +69,7 @@ Record** Priority(Data_record* input, int mode){
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
-                    if(assignPA > DDL->days_since_base*slotsPerDay) break;
+                    if(assignPA>=intDDL) break;
                     assignedSlot++;
                     while(table[assignPA]!=NULL) assignPA++;
                     if(assignPA>=slotsPerDay*period)
@@ -76,6 +80,13 @@ Record** Priority(Data_record* input, int mode){
                 
             case Assignment:
                 while(table[assignPA]!=NULL) assignPA++;
+                intDDL = getDDL(curTask);
+                if(assignPA>=intDDL){
+                    rejectedList[rejected]=curTask;
+                    rejected++;
+                    log_log(curTask,false);
+                    break;
+                }
                 DDL = curTask->day;
                 duration = curTask->duration;
                 if(assignPA==slotsPerDay*period){
@@ -88,7 +99,7 @@ Record** Priority(Data_record* input, int mode){
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
-                    if(assignPA > DDL->days_since_base*slotsPerDay) break;
+                    if(assignPA>=intDDL) break;
                     assignedSlot++;
                     while(table[assignPA]!=NULL) assignPA++;
                     if(assignPA>=slotsPerDay*period)
@@ -102,7 +113,18 @@ Record** Priority(Data_record* input, int mode){
                 int dayR = dateAndTime->days_since_base;
                 int startSlotR = dateAndTime->time_slot;
                 int startInTableR = dayR*slotsPerDay+startSlotR;
-                if(table[startInTableR]!=NULL || (startSlotR+duration)>slotsPerDay){
+                int ableR=1;
+                if(startSlotR+duration>slotsPerDay)
+                    ableR=0;
+                else{
+                    for(int i = 0; i < duration;i++){
+                        if(table[startInTableR+i]!=NULL){
+                            ableR=0;
+                            break;
+                        }
+                    }
+                }
+                if(ableR==0){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -126,7 +148,19 @@ Record** Priority(Data_record* input, int mode){
                 int dayA = dateAndTime->days_since_base;
                 int startSlotA = dateAndTime->time_slot;
                 int startInTableA = dayA*slotsPerDay+startSlotA;
-                if(table[startInTableA]!=NULL || (startInTableA+duration)>slotsPerDay){
+                int ableA=1;
+                if(startSlotA+duration>slotsPerDay)
+                    ableA=0;
+                else{
+                    for(int i = 0; i < duration;i++){
+                        if(table[startInTableA+i]!=NULL){
+                            ableA=0;
+                            break;
+                        }
+                    }
+                }
+                
+                if(ableA==0){
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
