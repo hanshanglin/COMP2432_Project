@@ -13,8 +13,6 @@
 #include "log.h"
 #include "FCFS.h"
 #include "DDL.h"
-#include "list.h"
-#include "Priority.h"
 
 #define MAX_INPUT_SIZE 128
 
@@ -130,18 +128,25 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
 
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);
-    int flag = input_error_handler(days_since_base, 0);/*if out of range, flag = 0; 1 otherwise*/
-    Date *date = newDate(days_since_base, time_slot);
+    int flag = input_error_handler(days_since_base, time_slot);/*if out of range, flag = 0; 1 otherwise*/
+printf("%s days_since_base=%d time_slot=%d getdurationDate=%d %d\n",record_id,days_since_base,time_slot,getdurationDate(),(days_since_base >= 0 && days_since_base < getdurationDate()));
+printf("flag=%d\n",flag);    
+Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Activity, record_id, date, duration);
-    if (flag == 0) {
+printf("flag=%d\n",flag);
+printf("hahah\n");
+flag=1;
+    if (!flag) {
+printf("triggered");
         char msg[] = "Date out of range!";
         log_error(record, msg);
         return;
-    }
+    }else printf("Else");
+printf("added\n");
     add_data(dataRecord, record);
 
 }
@@ -168,9 +173,17 @@ int main(void) {
         char *user_input = malloc(MAX_INPUT_SIZE);
         while (strcmp(user_input, "exitS3 ") != 0) {
             read(fd1[0], user_input, MAX_INPUT_SIZE);
+
+if(strcmp(user_input," ")==0){
+printf("Wrong input!Please enter an appropriate task!\n");
+write(fd2[1], "cont", 4);
+continue;}
             if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
+printf("ss%sss\n",user_input);
                 char delim[] = " ";/*splitting key*/
                 char *split_ptr = strtok(user_input, delim);/*get the first word*/
+printf("ss%sss\n",user_input);
+printf("ss%sss\n",split_ptr);
                 if (strcmp(split_ptr, "addPeriod") == 0) {
                     setPeriod(delim, split_ptr);
                 } else if (strcmp(split_ptr, "addAssignment") == 0) {
@@ -227,11 +240,8 @@ int main(void) {
                         split_ptr = strtok(NULL, delim);/*get output file name, 3rd para*/
                         char *output_file_name = split_ptr;
                         if (strcmp(algorithm_name, "Priority") == 0) {
-                            print_timetable(Priority(dataRecord,0), output_file_name);
-                        } else if(strcmp(algorithm_name,"Deadline")==0){
-                            print_timetable(Priority(dataRecord,1),output_file_name);
-                        }
-                        else if (strcmp(algorithm_name, "FCFS") == 0) {
+                            // print_timetable(Priority(dataRecord), output_file_name);
+                        } else if (strcmp(algorithm_name, "FCFS") == 0) {
                             print_timetable(FCFS(dataRecord), output_file_name);
                             print_report(output_file_name);
                         } else if (strcmp(algorithm_name, "SDDL") == 0) {
@@ -249,10 +259,11 @@ int main(void) {
                 } else {
                     printf("Wrong input! Please enter an appropriate task!\n");
                 }
-                write(fd2[1], "cont", 4);
-
+                
+write(fd2[1], "cont", 4);
 
             }
+
 
 
         }
