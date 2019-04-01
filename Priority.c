@@ -45,7 +45,8 @@ Record** Priority(Data_record* input, int mode){
     }
     curTask = head->task;
     
-    while(head!=NULL){
+    while(curTask!=NULL&&head!=NULL){
+        printf("%s\n",curTask->id);
         task_type type = curTask->type;
         switch(type){
             case Project:
