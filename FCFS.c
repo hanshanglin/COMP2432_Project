@@ -38,6 +38,7 @@ Record** FCFS(Data_record* input){
         task_type type = curTask->type;
         switch(type){
             case Project:
+                while(table[assignPA]!=NULL) assignPA++;
                 duration = curTask->duration;
                 DDL = curTask->day;
                 if(assignPA==slotsPerDay*period){
@@ -48,7 +49,6 @@ Record** FCFS(Data_record* input){
                 }
                 else accepted++;
                 log_log(curTask,true);
-                while(table[assignPA]!=NULL) assignPA++;
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
                     if(assignPA > DDL->days_since_base*slotsPerDay) break;
@@ -61,6 +61,7 @@ Record** FCFS(Data_record* input){
                 break;
             
             case Assignment:
+                while(table[assignPA]!=NULL) assignPA++;
                 DDL = curTask->day;
                 duration = curTask->duration;
                 if(assignPA==slotsPerDay*period){
@@ -71,7 +72,6 @@ Record** FCFS(Data_record* input){
                 }
                 else accepted++;
                 log_log(curTask,true);
-                while(table[assignPA]!=NULL) assignPA++;
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
                     if(assignPA > DDL->days_since_base*slotsPerDay) break;
