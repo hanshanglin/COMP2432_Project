@@ -7,6 +7,12 @@
 //
 
 #include "Priority.h"
+#include "record.h"
+#include "mytime.h"
+#include <string.h>
+#include <stdlib.h>
+#include "log.h"
+#include "list.h"
 Record** Priority(Data_record* input, int mode){
     //mode 0 is priority, mode 1 is DDL
     
@@ -33,17 +39,17 @@ Record** Priority(Data_record* input, int mode){
     Date* dateAndTime;
     
     struct Node* head = NULL;
-    printf("Before insertion:\n");
+   // printf("Before insertion:\n");
     while(curTask != NULL){
         insert(&head, newNode(curTask), mode);
-        printList(head);
+        //printList(head);
         curTask = next(input);
     }
-    printf("After insertion:\n");
+    //printf("After insertion:\n");
     struct Node* curNode = head;
     while(curNode!=NULL){
         curTask = curNode->task;
-        printf("%s\n",curTask->id);
+        //printf("%s\n",curTask->id);
         task_type type = curTask->type;
         switch(type){
             case Project:
