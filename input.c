@@ -177,11 +177,10 @@ printf("Wrong input!Please enter an appropriate task!\n");
 write(fd2[1], "cont", 4);
 continue;}
             if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
-printf("ss%sss\n",user_input);
+
                 char delim[] = " ";/*splitting key*/
                 char *split_ptr = strtok(user_input, delim);/*get the first word*/
-printf("ss%sss\n",user_input);
-printf("ss%sss\n",split_ptr);
+
                 if (strcmp(split_ptr, "addPeriod") == 0) {
                     setPeriod(delim, split_ptr);
                 } else if (strcmp(split_ptr, "addAssignment") == 0) {
