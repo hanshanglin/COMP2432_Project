@@ -9,13 +9,14 @@
 #include "record.h"
 #include "log.h"
 #include "FCFS.h"
+#include "DDL.h"
 
 
 #define MAX_INPUT_SIZE 128
 
 /*this function is used to handle the date that is out of the range*/
 int input_error_handler(int date_in_base) {/*return 0 if error happens, 1 othrewise*/
-    if (date_in_base > 0 && date_in_base < getdurationDate())
+    if (date_in_base >= 0 && date_in_base < getdurationDate())
         return 1;
     else
         return 0;
@@ -39,25 +40,22 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
 
-
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
     int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
-
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
-
     split_ptr = strtok(NULL, delim);/*get duration, 4th para*/
     int duration = atoi(split_ptr);
-
     Record *record = newRecord(Assignment, record_id, date, duration);
     if (flag == 0){
         char msg[] = "Date out of range!";
-        log_error(record,msg);
+
+        //log_error(record,msg);
+
         return;/*end*/
     }
-
     add_data(dataRecord, record);
 }
 
@@ -171,7 +169,7 @@ int main(void) {
 
             split_ptr = strtok(NULL, delim);/*get file name*/
 
-            FILE *fp = fopen("C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
+            FILE *fp = fopen(split_ptr,
                              "r");
             //FILE *fp = fopen(split_ptr,"r");
             if (fp == NULL) {
@@ -200,7 +198,26 @@ int main(void) {
 
 
         } else if (strcmp(split_ptr, "runS3") == 0) {
-            print_timetable(FCFS(dataRecord));
+            /*debug
+            printf("\n----------debug------------\n");
+            new_iter(dataRecord);
+            Record* cur = NULL;
+            while((cur = next(dataRecord))!=NULL){
+                printf("id:%s \t\t date:%d\t time:%d duration:%d DDL:%d\n",cur->id,cur->day->days_since_base,cur->day->time_slot,cur->duration,getDDL(cur));
+            }
+
+
+            printf("\n----------gubed------------\n");
+            end*/
+            split_ptr = strtok(NULL, delim);
+            if(strncmp(split_ptr,"DDL",strlen("DDL"))==0){
+                print_timetable(DDL(dataRecord));
+            } else if(strncmp(split_ptr,"FCFS",strlen("FCFS"))==0){
+                print_timetable(FCFS(dataRecord));
+            } else{
+                printf("Wrong input! Please enter an appropriate task!\n");
+            }
+            /*TODO bug: when enter "runS3", something error...*/
             /*TODO*/
 
         } else {
