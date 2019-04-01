@@ -61,7 +61,9 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Assignment, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date or time out of range!";
-        log_error(record, msg);
+        init_error_log();
+       log_error(record, msg);
+       stop_error_log();
         return;
     }
 
@@ -86,7 +88,9 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Project, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date out of range!";
-        log_error(record, msg);
+        init_error_log();
+       log_error(record, msg);
+       stop_error_log();
         return;
     }
     add_data(dataRecord, record);
@@ -113,7 +117,9 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Revision, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date out of range!";
-        log_error(record, msg);
+        init_error_log();
+       log_error(record, msg);
+       stop_error_log();
         return;
     }
     add_data(dataRecord, record);
@@ -143,7 +149,9 @@ Date *date = newDate(days_since_base, time_slot);
     if (flag==0) {
 
         char msg[] = "Date out of range!";
-        log_error(record, msg);
+        init_error_log();
+       log_error(record, msg);
+       stop_error_log();
         return;
     }
 
