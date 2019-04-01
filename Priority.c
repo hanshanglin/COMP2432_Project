@@ -7,12 +7,7 @@
 //
 
 #include "Priority.h"
-#include "record.h"
-#include "mytime.h"
-#include <string.h>
-#include <stdlib.h>
-#include "log.h"
-#include "list.h"
+
 Record** Priority(Data_record* input, int mode){
     //mode 0 is priority, mode 1 is DDL
     

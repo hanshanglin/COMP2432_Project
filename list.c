@@ -7,9 +7,7 @@
 //
 
 #include "list.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include "record.h"
+
 struct Node* newNode(Record* task){
     struct Node* sol = (struct Node*)malloc(sizeof(struct Node));
     sol->next = NULL;

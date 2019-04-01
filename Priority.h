@@ -10,9 +10,11 @@
 #define Priority_h
 
 #include <stdio.h>
-#include "list.h"
+#include <stdlib.h>
 #include "record.h"
 #include "mytime.h"
+#include "log.h"
+#include "list.h"
 #include <string.h>
 Record** Priority(Data_record* input, int mode);
 

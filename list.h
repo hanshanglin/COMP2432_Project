@@ -9,6 +9,7 @@
 #ifndef list_h
 #define list_h
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "record.h"
 struct Node{
