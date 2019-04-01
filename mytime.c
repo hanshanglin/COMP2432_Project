@@ -91,25 +91,38 @@ int convert_to_base(char *target_date)
     target.month = strtol(target_date+5,NULL,10);
     target.day = strtol(target_date+8,NULL,10);
 
-    if(start_date.year>target.year&&start_date.year>target.month&&start_date.day>target.day)
-        return -1;
-    int sol = 0;
-    for (int i = start_date.year ; i <target.year; ++i)
-        sol+=is_leap_year(i)?366:365;
-    sol = sol-start_date.day_in_year+day_in_year(target);
 
-    /*TODO test*/
+    int sol = 0;
+    if (target.year < start_date.year || (target.year == start_date.year && day_in_year(target) < start_date.day_in_year)){
+        for (int i = target.year; i < start_date.year; ++i) {
+            sol+=is_leap_year(i)?366:365;
+        }
+        sol = -sol+start_date.day_in_year-day_in_year(target);
+    }else{
+        for (int i = start_date.year ; i <target.year; ++i)
+            sol+=is_leap_year(i)?366:365;
+        sol = sol-start_date.day_in_year+day_in_year(target);
+    }
     return sol;
 }
 
 //convert an integer to a date "YYYY-MM-DD", eg. start Date is "2019-01-10", input 5 return "2019-01-15";
 char *convert_to_date(int num,char* buf)
 {
-    assert(num >= 0);
     date sol = start_date;
     sol.day=1;
     sol.month=1;
     num = start_date.day_in_year+num;
+    while(num<0){
+        if(is_leap_year(sol.year-1)){
+            sol.year--;
+            num+=366;
+        }
+        else{
+            sol.year--;
+            num+=365;
+        }
+    }
     while (num>365){
         if (is_leap_year(sol.year)){
             if (num<366) break;
@@ -134,7 +147,6 @@ char *convert_to_date(int num,char* buf)
 
     //convert to string
     sprintf(buf,"%04d-%02d-%02d",sol.year,sol.month,sol.day);
-    /*TODO test*/
     return buf;
 }
 

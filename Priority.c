@@ -1,21 +1,24 @@
 //
-//  FCFS.c
-//  OS project
+//  Priority.c
+//  2432P
 //
-//  Created by 贺家澍 on 10/3/2019.
+//  Created by 贺家澍 on 31/3/2019.
 //  Copyright © 2019 HE Jiashu. All rights reserved.
 //
 
-#include "FCFS.h"
+#include "Priority.h"
 #include "record.h"
 #include "mytime.h"
 #include <string.h>
 #include <stdlib.h>
 #include "log.h"
-Record** FCFS(Data_record* input){
-    set_algorithm_name("FCFS");
+#include "list.h"
+Record** Priority(Data_record* input, int mode){
+    //mode 0 is priority, mode 1 is DDL
+    
+    set_algorithm_name(mode==0?"Priority":"Deadline");
     log_start();
-   
+    
     int accepted=0;
     int rejected = 0;
     
@@ -24,18 +27,29 @@ Record** FCFS(Data_record* input){
     
     Record** table = malloc(sizeof(Record*)*period*slotsPerDay);
     Record** rejectedList=malloc(sizeof(Record*)*period*slotsPerDay);
-    memset(table,0,sizeof(Record*)*period*slotsPerDay);
     
     new_iter(input);
     Record* curTask = next(input);
     char* course;
     int duration;
-    Date* DDL;
     int intDDL;
+    Date* DDL;
     int assignedSlot=0;
     int assignPA=0;
     Date* dateAndTime;
-    while(curTask!=NULL){
+    
+    struct Node* head = NULL;
+    printf("Before insertion:\n");
+    while(curTask != NULL){
+        insert(&head, newNode(curTask), mode);
+        printList(head);
+        curTask = next(input);
+    }
+    printf("After insertion:\n");
+    struct Node* curNode = head;
+    while(curNode!=NULL){
+        curTask = curNode->task;
+        printf("%s\n",curTask->id);
         task_type type = curTask->type;
         switch(type){
             case Project:
@@ -67,7 +81,7 @@ Record** FCFS(Data_record* input){
                 }
                 
                 break;
-            
+                
             case Assignment:
                 while(table[assignPA]!=NULL) assignPA++;
                 intDDL = getDDL(curTask);
@@ -96,7 +110,7 @@ Record** FCFS(Data_record* input){
                         return table;
                 }
                 break;
-
+                
             case Revision:
                 dateAndTime = curTask->day;
                 duration = curTask->duration;
@@ -169,10 +183,8 @@ Record** FCFS(Data_record* input){
                 break;
                 
         }
-        curTask=next(input);
+        curNode=curNode->next;
     }
     log_stop();
-    
     return table;
 }
-

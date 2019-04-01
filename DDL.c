@@ -75,7 +75,7 @@ Record **DDL(Data_record *input) {
 
         if (flag == 0) //dont have time
         {
-            /*TODO reject cur*/
+            cur->excuted = 1;
             Project_list[i] = NULL;
         } else {
             //arrange time
@@ -225,8 +225,11 @@ Record **DDL(Data_record *input) {
     set_algorithm_name("DDL");
     log_start();
     new_iter(input);
-    while ((cur = next(input)) != NULL)
+    while ((cur = next(input)) != NULL){
         log_log(cur, cur->excuted == 0 ? true : false);
+        cur->excuted = cur->excuted == 0 ? cur->duration : 0;
+    }
+
     log_stop();
 
     return timetable;

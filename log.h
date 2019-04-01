@@ -11,12 +11,12 @@ void log_log(Record* record, bool accepted);
 
 void log_stop(void);
 
-void print_timetable(Record** table);
+void print_timetable(Record** table, char* filename);
 
-void print_report(int acc,int rej,int slot_used,int slot_num);
+void print_report(char* filename);
 
-void init_error_log();
+void init_error_log(void);
 
 void log_error(Record* record, char* msg);
 
-void stop_error_log();
+void stop_error_log(void);
