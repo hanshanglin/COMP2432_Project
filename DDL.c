@@ -75,7 +75,7 @@ Record **DDL(Data_record *input) {
 
         if (flag == 0) //dont have time
         {
-            /*TODO reject cur*/
+            cur->excuted = 1;
             Project_list[i] = NULL;
         } else {
             //arrange time
