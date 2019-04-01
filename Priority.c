@@ -43,9 +43,10 @@ Record** Priority(Data_record* input, int mode){
         insert(&head, newNode(curTask), mode);
         curTask = next(input);
     }
-    curTask = head->task;
-    
-    while(curTask!=NULL&&head!=NULL){
+    printList(head);
+    struct Node* curNode = head;
+    while(curNode!=NULL){
+        curTask = curNode->task;
         printf("%s\n",curTask->id);
         task_type type = curTask->type;
         switch(type){
@@ -180,8 +181,7 @@ Record** Priority(Data_record* input, int mode){
                 break;
                 
         }
-        head=head->next;
-        curTask=head->task;
+        curNode=curNode->next;
     }
     log_stop();
     return table;
