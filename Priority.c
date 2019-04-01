@@ -41,6 +41,7 @@ Record** Priority(Data_record* input, int mode){
     struct Node* head = NULL;
     while(curTask != NULL){
         insert(&head, newNode(curTask), mode);
+        printList(head);
         curTask = next(input);
     }
     printList(head);
