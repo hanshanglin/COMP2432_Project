@@ -102,7 +102,7 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);/*Time slot Not Applicable Here*/
 
-    int flag = input_error_handler(days_since_base,time_slot);/*if out of range, flag = 0; 1 otherwise*/
+    int flag = input_error_handler(days_since_base, time_slot);/*if out of range, flag = 0; 1 otherwise*/
     Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
@@ -128,18 +128,18 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
 
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);
-    int flag = input_error_handler(days_since_base,0);/*if out of range, flag = 0; 1 otherwise*/
+    int flag = input_error_handler(days_since_base, 0);/*if out of range, flag = 0; 1 otherwise*/
     Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Activity, record_id, date, duration);
-     if (flag == 0){
+    if (flag == 0) {
         char msg[] = "Date out of range!";
-        log_error(record,msg);
+        log_error(record, msg);
         return;
-        }
+    }
     add_data(dataRecord, record);
 
 }
@@ -185,7 +185,7 @@ int main(void) {
 
                     split_ptr = strtok(NULL, delim);/*get file name*/
 
-                    /*FILE *fp = fopen(
+                   /* FILE *fp = fopen(
                             "C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
                             "r");*/
                     FILE *fp = fopen(split_ptr,"r");
@@ -217,11 +217,6 @@ int main(void) {
                 } else if (strcmp(split_ptr, "runS3") == 0) {
                     /*schedule process is operating in the son process of child process*/
                     /*create pipe for the communication between son and child of child processes*/
-                    int fd3[2];
-                    if (pipe(fd3) < 0) {
-                        printf("Pipe creation fails\n");
-                        exit(1);
-                    }
                     if (fork() == 0) {
                         /*grandchild process*/
                         split_ptr = strtok(NULL, delim);/*get the name of algorithm, 2nd para*/
@@ -230,14 +225,16 @@ int main(void) {
                         split_ptr = strtok(NULL, delim);/*get output file name, 3rd para*/
                         char *output_file_name = split_ptr;
                         if (strcmp(algorithm_name, "Priority") == 0) {
-                           // print_timetable(Priority(dataRecord), output_file_name);
+                            // print_timetable(Priority(dataRecord), output_file_name);
                         } else if (strcmp(algorithm_name, "FCFS") == 0) {
                             print_timetable(FCFS(dataRecord), output_file_name);
-                        } else if (strcmp(algorithm_name, "Deadline") == 0) {
+                            print_report(output_file_name);
+                        } else if (strcmp(algorithm_name, "SDDL") == 0) {
                             print_timetable(DDL(dataRecord), output_file_name);
+                            print_report(output_file_name);
                         }
 
-
+                        exit(0);
                     } else {
                         /*child process*/
                         wait(NULL);
@@ -274,7 +271,7 @@ int main(void) {
             read(fd2[0], child_msg, 4);/*read the feedback from the child*/
         }
         free(par_user_input);
-        printf("Byebye~");
+        printf("Byebye~\n");
         close(fd1[1]);
         close(fd2[0]);
 
