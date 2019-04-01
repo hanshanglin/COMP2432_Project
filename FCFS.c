@@ -87,7 +87,7 @@ Record** FCFS(Data_record* input){
                 duration = curTask->duration;
                 int dayR = dateAndTime->days_since_base;
                 int startSlotR = dateAndTime->time_slot;
-                int startInTableR = (dayR-1)*slotsPerDay+startSlotR;
+                int startInTableR = dayR*slotsPerDay+startSlotR;
                 int ableR=1;
                 if(startSlotR+duration>slotsPerDay)
                     ableR=0;
@@ -122,7 +122,7 @@ Record** FCFS(Data_record* input){
                 duration=curTask->duration;
                 int dayA = dateAndTime->days_since_base;
                 int startSlotA = dateAndTime->time_slot;
-                int startInTableA = (dayA-1)*slotsPerDay+startSlotA;
+                int startInTableA = dayA*slotsPerDay+startSlotA;
                 int ableA=1;
                 if(startSlotA+duration>slotsPerDay)
                     ableA=0;
