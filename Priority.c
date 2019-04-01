@@ -39,12 +39,13 @@ Record** Priority(Data_record* input, int mode){
     Date* dateAndTime;
     
     struct Node* head = NULL;
+    printf("Before insertion:\n");
     while(curTask != NULL){
         insert(&head, newNode(curTask), mode);
         printList(head);
         curTask = next(input);
     }
-    printList(head);
+    printf("After insertion:\n");
     struct Node* curNode = head;
     while(curNode!=NULL){
         curTask = curNode->task;
