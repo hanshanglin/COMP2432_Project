@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<unistd.h>
+#include<fcntl.h>
+#include<sys/wait.h>
 
 #define  _CRT_SECURE_NO_WARNINGS
 #pragma warning(dsiable:4996)
@@ -11,12 +14,11 @@
 #include "FCFS.h"
 #include "DDL.h"
 
-
 #define MAX_INPUT_SIZE 128
 
 /*this function is used to handle the date that is out of the range*/
-int input_error_handler(int date_in_base) {/*return 0 if error happens, 1 othrewise*/
-    if (date_in_base >= 0 && date_in_base < getdurationDate())
+int input_error_handler(int date_in_base, int timeslot) {
+    if ((date_in_base >= 0 && date_in_base < getdurationDate()) && (timeslot >= 0 && timeslot < getdurationtime()))
         return 1;
     else
         return 0;
@@ -34,28 +36,33 @@ void setPeriod(char *delim, char *split_ptr) {
     set_start_time(split_ptr);/*int*/
     split_ptr = strtok(NULL, delim);/*get the fifth parameter*/
     set_end_time(split_ptr);
+    if (getdurationtime() < 0)
+        printf("Wrong period input, please enter a new time period!\n");
 }
 
 void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
 
+
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
-    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
+    int flag = input_error_handler(days_since_base, 0);/*if out of range, flag = 0; 1 otherwise*/
+
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
+
     split_ptr = strtok(NULL, delim);/*get duration, 4th para*/
     int duration = atoi(split_ptr);
+
     Record *record = newRecord(Assignment, record_id, date, duration);
-    if (flag == 0){
-        char msg[] = "Date out of range!";
-
-        //log_error(record,msg);
-
-        return;/*end*/
+    if (flag == 0) {
+        char msg[] = "Date or time out of range!";
+        log_error(record, msg);
+        return;
     }
+
     add_data(dataRecord, record);
 }
 
@@ -66,7 +73,7 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get due date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
-    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
+    int flag = input_error_handler(days_since_base, 0);/*if out of range, flag = 0; 1 otherwise*/
 
     int time_slot = -1;/*Time slot Not Applicable Here*/
     Date *date = newDate(days_since_base, time_slot);
@@ -75,10 +82,10 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Project, record_id, date, duration);
-    if (flag == 0){
+    if (flag == 0) {
         char msg[] = "Date out of range!";
-        log_error(record,msg);
-        return;/*end*/
+        log_error(record, msg);
+        return;
     }
     add_data(dataRecord, record);
 }
@@ -90,48 +97,48 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get starting date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
-    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
-
 
 
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
     int time_slot = convert_to_timeslot(split_ptr);/*Time slot Not Applicable Here*/
+
+    int flag = input_error_handler(days_since_base, time_slot);/*if out of range, flag = 0; 1 otherwise*/
     Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Revision, record_id, date, duration);
-    if (flag == 0){
+    if (flag == 0) {
         char msg[] = "Date out of range!";
-        log_error(record,msg);
-        return;/*end*/
+        log_error(record, msg);
+        return;
     }
     add_data(dataRecord, record);
 }
 
-void addActivity(Data_record *dataRecord, char *delim, char *split_ptr)  {
+void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
     split_ptr = strtok(NULL, delim);/*get subject code, 2nd para*/
     char *record_id = split_ptr;
 
     split_ptr = strtok(NULL, delim);/*get starting date, 3rd para*/
     char *due_date = split_ptr;
     int days_since_base = convert_to_base(due_date);
-    int flag = input_error_handler(days_since_base);/*if out of range, flag = 0; 1 otherwise*/
 
 
     split_ptr = strtok(NULL, delim);/*get time, 4th para*/
-    int time_slot = convert_to_timeslot(split_ptr);/*Time slot Not Applicable Here*/
+    int time_slot = convert_to_timeslot(split_ptr);
+    int flag = input_error_handler(days_since_base, 0);/*if out of range, flag = 0; 1 otherwise*/
     Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
 
     Record *record = newRecord(Activity, record_id, date, duration);
-    if (flag == 0){
+    if (flag == 0) {
         char msg[] = "Date out of range!";
-        log_error(record,msg);
-        return;/*end*/
+        log_error(record, msg);
+        return;
     }
     add_data(dataRecord, record);
 
@@ -139,100 +146,139 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr)  {
 
 
 int main(void) {
+    /*pipe creation*/
+    int fd1[2];/*parent writes, child reads*/
+    int fd2[2];/*parent reads, child writes*/
+    if (pipe(fd1) < 0) {
+        printf("Pipe creation fails\n");
+        exit(1);
+    }
+    if (pipe(fd2) < 0) {
+        printf("Pipe creation fails\n");
+        exit(1);
+    }
+    if (fork() == 0) {
+        /*child process*/
+        /*this child used to store the input information*/
+        close(fd1[1]);
+        close(fd2[0]);
+        Data_record *dataRecord = newDataRecord();
+        char *user_input = malloc(MAX_INPUT_SIZE);
+        while (strcmp(user_input, "exitS3 ") != 0) {
+            read(fd1[0], user_input, MAX_INPUT_SIZE);
+            if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
+                char delim[] = " ";/*splitting key*/
+                char *split_ptr = strtok(user_input, delim);/*get the first word*/
+                if (strcmp(split_ptr, "addPeriod") == 0) {
+                    setPeriod(delim, split_ptr);
+                } else if (strcmp(split_ptr, "addAssignment") == 0) {
+                    addAssignment(dataRecord, delim, split_ptr);
+                } else if (strcmp(split_ptr, "addProject") == 0) {
+                    addProject(dataRecord, delim, split_ptr);
+                } else if (strcmp(split_ptr, "addRevision") == 0) {
+                    addRevision(dataRecord, delim, split_ptr);
+                } else if (strcmp(split_ptr, "addActivity") == 0) {
+                    addActivity(dataRecord, delim, split_ptr);
+                } else if (strcmp(split_ptr, "addBatch") == 0) {
 
-    printf("   ~~WELCOME TO S3~~\n\n");
-    printf("Please enter: ");
-    char *user_input = malloc(MAX_INPUT_SIZE);
-    fgets(user_input, MAX_INPUT_SIZE, stdin);
-    user_input[strlen(user_input) - 1] = ' ';
+                    char line[MAX_INPUT_SIZE];
 
-    Data_record *dataRecord = newDataRecord();
+                    split_ptr = strtok(NULL, delim);/*get file name*/
 
-    while (strcmp(user_input, "exitS3 ") != 0) {
+                   /* FILE *fp = fopen(
+                            "C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
+                            "r");*/
+                    FILE *fp = fopen(split_ptr,"r");
+                    if (fp == NULL) {
+                        printf("Could not open file %s", split_ptr);
+                        return 1;
+                    }
 
-        /*parsing the string input by user*/
-        char delim[] = " ";/*splitting key*/
-        char *split_ptr = strtok(user_input, delim);/*get the first word*/
-        if (strcmp(split_ptr, "addPeriod") == 0) {
-            setPeriod(delim, split_ptr);
-        } else if (strcmp(split_ptr, "addAssignment") == 0) {
-            addAssignment(dataRecord, delim, split_ptr);
-        } else if (strcmp(split_ptr, "addProject") == 0) {
-            addProject(dataRecord, delim, split_ptr);
-        } else if (strcmp(split_ptr, "addRevision") == 0) {
-            addRevision(dataRecord, delim, split_ptr);
-        } else if (strcmp(split_ptr, "addActivity") == 0) {
-            addActivity(dataRecord, delim, split_ptr);
-        } else if (strcmp(split_ptr, "addBatch") == 0) {
+                    while (fgets(line, MAX_INPUT_SIZE, (FILE *) fp) != NULL) {
 
-            char line[MAX_INPUT_SIZE];
+                        char *word = strtok(line, delim);/*get the first word in each line*/
 
-            split_ptr = strtok(NULL, delim);/*get file name*/
+                        if (strcmp(word, "addPeriod") == 0)/*if setPeriod more than once, take the last one as real*/
+                            setPeriod(delim, word);
+                        else if (strcmp(word, "addAssignment") == 0)
+                            addAssignment(dataRecord, delim, word);
+                        else if (strcmp(word, "addProject") == 0)
+                            addProject(dataRecord, delim, word);
+                        else if (strcmp(word, "addRevision") == 0)
+                            addRevision(dataRecord, delim, word);
+                        else if (strcmp(word, "addActivity") == 0)
+                            addActivity(dataRecord, delim, word);
+                        else
+                            break;
+                    }
+                    fclose(fp);
 
-            FILE *fp = fopen(split_ptr,
-                             "r");
-            //FILE *fp = fopen(split_ptr,"r");
-            if (fp == NULL) {
-                printf("Could not open file %s", split_ptr);
-                return 1;
+
+                } else if (strcmp(split_ptr, "runS3") == 0) {
+                    /*schedule process is operating in the son process of child process*/
+                    /*create pipe for the communication between son and child of child processes*/
+                    if (fork() == 0) {
+                        /*grandchild process*/
+                        split_ptr = strtok(NULL, delim);/*get the name of algorithm, 2nd para*/
+                        char *algorithm_name = split_ptr;
+
+                        split_ptr = strtok(NULL, delim);/*get output file name, 3rd para*/
+                        char *output_file_name = split_ptr;
+                        if (strcmp(algorithm_name, "Priority") == 0) {
+                            // print_timetable(Priority(dataRecord), output_file_name);
+                        } else if (strcmp(algorithm_name, "FCFS") == 0) {
+                            print_timetable(FCFS(dataRecord), output_file_name);
+                            print_report(output_file_name);
+                        } else if (strcmp(algorithm_name, "SDDL") == 0) {
+                            print_timetable(DDL(dataRecord), output_file_name);
+                            print_report(output_file_name);
+                        }
+
+                        exit(0);
+                    } else {
+                        /*child process*/
+                        wait(NULL);
+                    }
+
+
+                } else {
+                    printf("Wrong input! Please enter an appropriate task!\n");
+                }
+                write(fd2[1], "cont", 4);
+
+
             }
 
-            while (fgets(line, MAX_INPUT_SIZE, (FILE *) fp) != NULL) {
 
-                char *word = strtok(line, delim);/*get the first word in each line*/
-
-                if (strcmp(word, "addPeriod") == 0)/*if setPeriod more than once, take the last one as real*/
-                    setPeriod(delim, word);
-                else if (strcmp(word, "addAssignment") == 0)
-                    addAssignment(dataRecord, delim, word);
-                else if (strcmp(word, "addProject") == 0)
-                    addProject(dataRecord, delim, word);
-                else if (strcmp(word, "addRevision") == 0)
-                    addRevision(dataRecord, delim, word);
-                else if (strcmp(word, "addActivity") == 0)
-                    addActivity(dataRecord, delim, word);
-                else
-                    break;
-            }
-            fclose(fp);
-
-
-        } else if (strcmp(split_ptr, "runS3") == 0) {
-            /*debug
-            printf("\n----------debug------------\n");
-            new_iter(dataRecord);
-            Record* cur = NULL;
-            while((cur = next(dataRecord))!=NULL){
-                printf("id:%s \t\t date:%d\t time:%d duration:%d DDL:%d\n",cur->id,cur->day->days_since_base,cur->day->time_slot,cur->duration,getDDL(cur));
-            }
-
-
-            printf("\n----------gubed------------\n");
-            end*/
-            split_ptr = strtok(NULL, delim);
-            if(strncmp(split_ptr,"DDL",strlen("DDL"))==0){
-                print_timetable(DDL(dataRecord));
-            } else if(strncmp(split_ptr,"FCFS",strlen("FCFS"))==0){
-                print_timetable(FCFS(dataRecord));
-            } else{
-                printf("Wrong input! Please enter an appropriate task!\n");
-            }
-            /*TODO bug: when enter "runS3", something error...*/
-            /*TODO*/
-
-        } else {
-            printf("Wrong input! Please enter an appropriate task!\n");
         }
+        write(fd2[1], "exit", 4);
+        close(fd1[0]);
+        close(fd2[1]);
+        exit(0);
+    } else {
+        /*parent process*/
+        close(fd1[0]);
+        close(fd2[1]);
+        printf("   ~~WELCOME TO S3~~\n\n");
 
+        char *par_user_input = malloc(MAX_INPUT_SIZE);
+        char child_msg[5] = {'0', '0', '0', '0', '\0'};
+        while (strcmp(child_msg, "exit") != 0) {
+            printf("Please enter: ");
+            fgets(par_user_input, MAX_INPUT_SIZE, stdin);
+            par_user_input[strlen(par_user_input) - 1] = ' ';
+            write(fd1[1], par_user_input, MAX_INPUT_SIZE);/*pass the user input to the child*/
+            read(fd2[0], child_msg, 4);/*read the feedback from the child*/
+        }
+        free(par_user_input);
+        printf("Byebye~\n");
+        close(fd1[1]);
+        close(fd2[0]);
 
-        printf("Please enter: ");
-        fgets(user_input, MAX_INPUT_SIZE, stdin);
-        user_input[strlen(user_input) - 1] = ' ';
+        wait(NULL);
+
 
     }
 
-
-    free(user_input);
-    printf("Byebye~");
 
 }
