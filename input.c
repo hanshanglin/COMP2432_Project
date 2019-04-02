@@ -60,10 +60,9 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
 
     Record *record = newRecord(Assignment, record_id, date, duration);
     if (flag == 0) {
-        char msg[] = "Date or time out of range!";
-        init_error_log();
+        char msg[] = "Date out of range!";
+      
        log_error(record, msg);
-       stop_error_log();
         return;
     }
 
@@ -88,9 +87,7 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Project, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date out of range!";
-        init_error_log();
        log_error(record, msg);
-       stop_error_log();
         return;
     }
     add_data(dataRecord, record);
@@ -116,10 +113,10 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
 
     Record *record = newRecord(Revision, record_id, date, duration);
     if (flag == 0) {
-        char msg[] = "Date out of range!";
-        init_error_log();
+        char msg[] = "Date or time out of range!";
+  
        log_error(record, msg);
-       stop_error_log();
+     
         return;
     }
     add_data(dataRecord, record);
@@ -149,9 +146,9 @@ Date *date = newDate(days_since_base, time_slot);
     if (flag==0) {
 
         char msg[] = "Date out of range!";
-        init_error_log();
+       
        log_error(record, msg);
-       stop_error_log();
+
         return;
     }
 
@@ -178,6 +175,7 @@ int main(void) {
         close(fd1[1]);
         close(fd2[0]);
         Data_record *dataRecord = newDataRecord();
+        init_error_log();
         char *user_input = malloc(MAX_INPUT_SIZE);
         while (strcmp(user_input, "exitS3 ") != 0) {
             read(fd1[0], user_input, MAX_INPUT_SIZE);
@@ -266,7 +264,7 @@ continue;}
                 } else {
                     printf("Wrong input! Please enter an appropriate task!\n");
                 }
-
+       stop_error_log();
 write(fd2[1], "cont", 4);
 
             }
