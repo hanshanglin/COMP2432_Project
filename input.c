@@ -61,8 +61,8 @@ void addAssignment(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Assignment, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date out of range!";
-      
-       log_error(record, msg);
+
+        log_error(record, msg);
         return;
     }
 
@@ -87,7 +87,7 @@ void addProject(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Project, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date out of range!";
-       log_error(record, msg);
+        log_error(record, msg);
         return;
     }
     add_data(dataRecord, record);
@@ -114,9 +114,9 @@ void addRevision(Data_record *dataRecord, char *delim, char *split_ptr) {
     Record *record = newRecord(Revision, record_id, date, duration);
     if (flag == 0) {
         char msg[] = "Date or time out of range!";
-  
-       log_error(record, msg);
-     
+
+        log_error(record, msg);
+
         return;
     }
     add_data(dataRecord, record);
@@ -135,7 +135,7 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
     int time_slot = convert_to_timeslot(split_ptr);
     int flag = input_error_handler(days_since_base, time_slot);/*if out of range, flag = 0; 1 otherwise*/
 
-Date *date = newDate(days_since_base, time_slot);
+    Date *date = newDate(days_since_base, time_slot);
 
     split_ptr = strtok(NULL, delim);/*get duration, 5th para*/
     int duration = atoi(split_ptr);
@@ -143,11 +143,11 @@ Date *date = newDate(days_since_base, time_slot);
     Record *record = newRecord(Activity, record_id, date, duration);
 
 
-    if (flag==0) {
+    if (flag == 0) {
 
         char msg[] = "Date out of range!";
-       
-       log_error(record, msg);
+
+        log_error(record, msg);
 
         return;
     }
@@ -180,10 +180,11 @@ int main(void) {
         while (strcmp(user_input, "exitS3 ") != 0) {
             read(fd1[0], user_input, MAX_INPUT_SIZE);
 
-if(strcmp(user_input," ")==0){
-printf("Wrong input!Please enter an appropriate task!\n");
-write(fd2[1], "cont", 4);
-continue;}
+            if (strcmp(user_input, " ") == 0) {
+                printf("Wrong input!Please enter an appropriate task!\n");
+                write(fd2[1], "cont", 4);
+                continue;
+            }
             if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
 
                 char delim[] = " ";/*splitting key*/
@@ -205,10 +206,10 @@ continue;}
 
                     split_ptr = strtok(NULL, delim);/*get file name*/
 
-                   /* FILE *fp = fopen(
-                            "C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
-                            "r");*/
-                    FILE *fp = fopen(split_ptr,"r");
+                    /* FILE *fp = fopen(
+                             "C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
+                             "r");*/
+                    FILE *fp = fopen(split_ptr, "r");
                     if (fp == NULL) {
                         printf("Could not open file %s", split_ptr);
                         return 1;
@@ -245,7 +246,11 @@ continue;}
                         split_ptr = strtok(NULL, delim);/*get output file name, 3rd para*/
                         char *output_file_name = split_ptr;
                         if (strcmp(algorithm_name, "Priority") == 0) {
-                            print_timetable(Priority(dataRecord,0), output_file_name);
+                            print_timetable(Priority(dataRecord, 0), output_file_name);
+                            print_report(output_file_name);
+                        } else if (strcmp(algorithm_name, "Deadline") == 0) {
+                            print_timetable(Priority(dataRecord, 1), output_file_name);
+                            print_report(output_file_name);
                         } else if (strcmp(algorithm_name, "FCFS") == 0) {
                             print_timetable(FCFS(dataRecord), output_file_name);
                             print_report(output_file_name);
@@ -253,7 +258,7 @@ continue;}
                             print_timetable(DDL(dataRecord), output_file_name);
                             print_report(output_file_name);
                         }
-
+                        
                         exit(0);
                     } else {
                         /*child process*/
@@ -264,11 +269,10 @@ continue;}
                 } else {
                     printf("Wrong input! Please enter an appropriate task!\n");
                 }
-       stop_error_log();
-write(fd2[1], "cont", 4);
+                stop_error_log();
+                write(fd2[1], "cont", 4);
 
             }
-
 
 
         }
