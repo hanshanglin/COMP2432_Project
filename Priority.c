@@ -45,7 +45,9 @@ Record** Priority(Data_record* input, int mode){
         //printList(head);
         curTask = next(input);
     }
-    //printf("After insertion:\n");
+    printf("After insertion: ");
+    printList(head);
+    
     struct Node* curNode = head;
     while(curNode!=NULL){
         curTask = curNode->task;
