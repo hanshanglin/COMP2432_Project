@@ -191,6 +191,7 @@ Record** Priority(Data_record* input, int mode){
                 
         }
         curNode=curNode->next;
+        printf("pass\n");
     }
     log_stop();
     return table;
