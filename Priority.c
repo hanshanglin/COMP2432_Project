@@ -45,13 +45,14 @@ Record** Priority(Data_record* input, int mode){
         //printList(head);
         curTask = next(input);
     }
-    printf("After insertion: ");
-    printList(head);
+    //printf("After insertion: ");
+    //printList(head);
     
+    curTask = head->task;
     struct Node* curNode = head;
     while(curNode!=NULL){
         curTask = curNode->task;
-        //printf("%s\n",curTask->id);
+        printf("%s\n",curTask->id);
         task_type type = curTask->type;
         switch(type){
             case Project:
