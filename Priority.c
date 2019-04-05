@@ -27,6 +27,7 @@ Record** Priority(Data_record* input, int mode){
     
     Record** table = malloc(sizeof(Record*)*period*slotsPerDay);
     Record** rejectedList=malloc(sizeof(Record*)*period*slotsPerDay);
+    memset(table,0,sizeof(Record*)*period*slotsPerDay);
     
     new_iter(input);
     Record* curTask = next(input);
@@ -48,14 +49,14 @@ Record** Priority(Data_record* input, int mode){
     struct Node* curNode = head;
     while(curNode!=NULL){
         curTask = curNode->task;
-        printf("%s\n",curTask->id);
+        //printf("%s\n",curTask->id);
         task_type type = curTask->type;
         switch(type){
             case Project:
                 while(table[assignPA]!=NULL) assignPA++;
                 intDDL = getDDL(curTask);
                 if(assignPA>=intDDL){
-                    printf("rejecting because of DDL: assignPA = %d\n", assignPA);
+                    //printf("rejecting because of DDL: assignPA = %d\n", assignPA);
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -64,7 +65,7 @@ Record** Priority(Data_record* input, int mode){
                 duration = curTask->duration;
                 DDL = curTask->day;
                 if(assignPA==slotsPerDay*period){
-                    printf("rejecting because of full: assignPA = %d\n", assignPA);
+                    //printf("rejecting because of full: assignPA = %d\n", assignPA);
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -189,7 +190,7 @@ Record** Priority(Data_record* input, int mode){
                 
         }
         curNode=curNode->next;
-        printf("pass\n");
+        //printf("pass\n");
     }
     log_stop();
     return table;
