@@ -15,6 +15,7 @@ static char _log_date_buf[11];
 static int acc_count=0;
 static int rej_count=0;
 static int slot_occupied=0;
+static Data_record* accepted_tasks=NULL;
 static Data_record* rejected_tasks=NULL;
 
 const char* type_to_command(task_type type){
@@ -52,6 +53,7 @@ void log_start(){
     acc_count=0;
     rej_count=0;
     slot_occupied=0;
+    accepted_tasks=newDataRecord();
     rejected_tasks=newDataRecord();
 }
 
@@ -69,26 +71,21 @@ void log_log(Record* record, bool accepted){
     fprintf(log_file,"%s\n",accepted?"Accepted":"         Rejected");
 
     accepted?acc_count++:rej_count++;
-    if(!accepted) add_data(rejected_tasks,record);
+    if(accepted)
+        add_data(accepted_tasks,record);
+    else
+        add_data(rejected_tasks,record);
 }
 
 void log_error(Record* record, char* msg){
-    //printf("%p\n",record);
     fprintf(err_file,"[Error] %s <%s %s %s ",msg,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,_log_date_buf));
-    //printf("%p\n",record);
     if(record->type==Assignment||record->type==Project){
-        //printf("1-1\n");
         fprintf(err_file,"%d>\n",record->duration);
-        //printf("1-2\n");
     }
 
     else{
-        //printf("2-1\n");
         fprintf(err_file,"%02d:00 %d>\n",record->day->time_slot+getStartTime(),record->duration);
-        //printf("2-2\n");
     }
-
-    //printf("%p\n",record);
 }
 
 void log_stop(){
@@ -132,7 +129,7 @@ void print_timetable(Record** table, char* filename){
         }
         printf("\n");fprintf(out,"\n");
     }
-    fclose(out);/* todo never close*/
+    fclose(out);
 }
 
 void print_report(char* filename){
@@ -145,6 +142,21 @@ void print_report(char* filename){
     fprintf(out,"There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc_count+rej_count,acc_count,rej_count);
     fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
 
+    completed_count=0;completed_time=0;
+    total_time=0;
+    new_iter(accepted_tasks);
+    for(Record* rec=next(accepted_tasks);rec!=NULL;rec=next(accepted_tasks)){
+        total_time+=rec->duration;
+        completed_time+=rec->executed;
+        if(rec->duration==rec->executed) completed_count++;
+    }
+    
+    printf("%d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,1e2*completed_count/acc_count);
+    printf("%d out of %d hours arranged (%.2f%%)\n",completed_time,total_time,1e2*completed_time/total_time);
+    
+    fprintf(out,"%d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,1e2*completed_count/acc_count);
+    fprintf(out,"%d out of %d hours arranged (%.2f%%)\n",completed_time,total_time,1e2*completed_time/total_time);
+    
     if(rejected_tasks->count){
         printf("The following task(s) will be rejected:\n");
         fprintf(out,"The following task(s) will be rejected:\n");
@@ -153,6 +165,6 @@ void print_report(char* filename){
             printf("%s %s\n",type_to_command(rec->type),rec->id),fprintf(out,"%s %s\n",type_to_command(rec->type),rec->id);
     }
 
-    fclose(out);/*todo never close?*/
+    fclose(out);
     free(rejected_tasks);
 }
