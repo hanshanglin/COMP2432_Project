@@ -142,13 +142,13 @@ void print_report(char* filename){
     fprintf(out,"There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc_count+rej_count,acc_count,rej_count);
     fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
 
-    completed_count=0;completed_time=0;
-    total_time=0;
+    int completed_count=0,completed_time=0;
+    int total_time=0;
     new_iter(accepted_tasks);
     for(Record* rec=next(accepted_tasks);rec!=NULL;rec=next(accepted_tasks)){
         total_time+=rec->duration;
-        completed_time+=rec->executed;
-        if(rec->duration==rec->executed) completed_count++;
+        completed_time+=rec->excuted;
+        if(rec->duration==rec->excuted) completed_count++;
     }
     
     printf("%d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,1e2*completed_count/acc_count);
