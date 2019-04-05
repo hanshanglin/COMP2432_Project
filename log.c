@@ -15,7 +15,9 @@ static char _log_date_buf[11];
 static int acc_count=0;
 static int rej_count=0;
 static int slot_occupied=0;
-static Data_record* accepted_tasks=NULL;
+static int completed_count=0,completed_time=0;
+static int total_time=0;
+//static Data_record* accepted_tasks=NULL;
 static Data_record* rejected_tasks=NULL;
 
 const char* type_to_command(task_type type){
@@ -53,7 +55,7 @@ void log_start(){
     acc_count=0;
     rej_count=0;
     slot_occupied=0;
-    accepted_tasks=newDataRecord();
+    //accepted_tasks=newDataRecord();
     rejected_tasks=newDataRecord();
 }
 
@@ -72,7 +74,7 @@ void log_log(Record* record, bool accepted){
 
     accepted?acc_count++:rej_count++;
     if(accepted)
-        add_data(accepted_tasks,record);
+        ;//add_data(accepted_tasks,record);
     else
         add_data(rejected_tasks,record);
 }
@@ -123,6 +125,12 @@ void print_timetable(Record** table, char* filename){
             }else{
                 str=table[i*width+j]->id;
                 slot_occupied++;
+                if(table[i*width+j]->excuted>-1){
+                    total_time+=table[i*width+j]->duration;
+                    completed_time+=table[i*width+j]->excuted;
+                    if(table[i*width+j]->duration==table[i*width+j]->excuted) completed_count++;
+                    table[i*width+j]->excuted=-1;
+                }
             }
             printf("\t%-12s",str);
             fprintf(out,"\t%-12s",str);
@@ -142,14 +150,14 @@ void print_report(char* filename){
     fprintf(out,"There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc_count+rej_count,acc_count,rej_count);
     fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
 
-    int completed_count=0,completed_time=0;
+    /*int completed_count=0,completed_time=0;
     int total_time=0;
     new_iter(accepted_tasks);
     for(Record* rec=next(accepted_tasks);rec!=NULL;rec=next(accepted_tasks)){
         total_time+=rec->duration;
         completed_time+=rec->excuted;
         if(rec->duration==rec->excuted) completed_count++;
-    }
+    }*/
     
     printf("%d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,1e2*completed_count/acc_count);
     printf("%d out of %d hours arranged (%.2f%%)\n",completed_time,total_time,1e2*completed_time/total_time);
