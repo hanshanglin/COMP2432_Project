@@ -9,7 +9,7 @@
 static int log_id=1;
 static char *algo_name=NULL;
 static FILE *log_file=NULL;
-//static FILE *err_file=NULL;
+static FILE *err_file=NULL;
 static char _log_date_buf[11];
 
 static int acc_count=0;
