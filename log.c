@@ -132,6 +132,7 @@ void print_timetable(Record** table, char* filename){
         }
         printf("\n");fprintf(out,"\n");
     }
+    fclose(out);/* todo never close*/
 }
 
 void print_report(char* filename){
@@ -152,5 +153,6 @@ void print_report(char* filename){
             printf("%s %s\n",type_to_command(rec->type),rec->id),fprintf(out,"%s %s\n",type_to_command(rec->type),rec->id);
     }
 
+    fclose(out);/*todo never close?*/
     free(rejected_tasks);
 }
