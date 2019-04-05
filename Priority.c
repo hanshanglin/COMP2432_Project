@@ -39,14 +39,10 @@ Record** Priority(Data_record* input, int mode){
     Date* dateAndTime;
     
     struct Node* head = NULL;
-   // printf("Before insertion:\n");
     while(curTask != NULL){
         insert(&head, newNode(curTask), mode);
-        //printList(head);
         curTask = next(input);
     }
-    //printf("After insertion: ");
-    //printList(head);
     
     curTask = head->task;
     struct Node* curNode = head;
@@ -59,6 +55,7 @@ Record** Priority(Data_record* input, int mode){
                 while(table[assignPA]!=NULL) assignPA++;
                 intDDL = getDDL(curTask);
                 if(assignPA>=intDDL){
+                    printf("rejecting because of DDL: assignPA = %d\n", assignPA);
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
@@ -67,6 +64,7 @@ Record** Priority(Data_record* input, int mode){
                 duration = curTask->duration;
                 DDL = curTask->day;
                 if(assignPA==slotsPerDay*period){
+                    printf("rejecting because of full: assignPA = %d\n", assignPA);
                     rejectedList[rejected]=curTask;
                     rejected++;
                     log_log(curTask,false);
