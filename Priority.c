@@ -73,6 +73,7 @@ Record** Priority(Data_record* input, int mode){
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
+                    curTask->excuted++;
                     if(assignPA>=intDDL) break;
                     assignedSlot++;
                     while(table[assignPA]!=NULL) assignPA++;
@@ -103,6 +104,7 @@ Record** Priority(Data_record* input, int mode){
                 log_log(curTask,true);
                 for(int i =0; i < duration;i++){
                     table[assignPA++]=curTask;
+                    curTask->excuted++;
                     if(assignPA>=intDDL) break;
                     assignedSlot++;
                     while(table[assignPA]!=NULL) assignPA++;
@@ -138,6 +140,7 @@ Record** Priority(Data_record* input, int mode){
                 int assignR = startInTableR;
                 for(int i = 0;i<duration;i++){
                     table[assignR]=curTask;
+                    curTask->excuted++;
                     assignedSlot++;
                     assignR++;
                     if(assignedSlot>slotsPerDay*period)
@@ -175,6 +178,7 @@ Record** Priority(Data_record* input, int mode){
                 int assignA = startInTableA;
                 for(int i = 0;i<duration;i++){
                     table[assignA]=curTask;
+                    curTask->excuted++;
                     assignA++;
                     assignedSlot++;
                     if(assignedSlot>slotsPerDay*period)
