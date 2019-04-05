@@ -284,7 +284,7 @@ int main(void) {
         exit(0);
     } else {
         /*parent process*/
-        init_error_log();
+        //init_error_log();
         close(fd1[0]);
         close(fd2[1]);
         printf("   ~~WELCOME TO S3~~\n\n");
@@ -299,7 +299,7 @@ int main(void) {
             read(fd2[0], child_msg, 4);/*read the feedback from the child*/
         }
         free(par_user_input);
-        stop_error_log();
+        //stop_error_log();
         printf("Byebye~\n");
         close(fd1[1]);
         close(fd2[0]);
