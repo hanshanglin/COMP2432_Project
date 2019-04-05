@@ -183,6 +183,7 @@ int main(void) {
             if (strcmp(user_input, " ") == 0) {
                 printf("Wrong input!Please enter an appropriate task!\n");
                 write(fd2[1], "cont", 4);
+                stop_error_log();
                 continue;
             }
             if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
@@ -212,7 +213,9 @@ int main(void) {
                     FILE *fp = fopen(split_ptr, "r");
                     if (fp == NULL) {
                         printf("Could not open file %s", split_ptr);
-                        return 1;
+                        stop_error_log();
+                        write(fd2[1], "cont", 4);
+                        continue;
                     }
 
                     while (fgets(line, MAX_INPUT_SIZE, (FILE *) fp) != NULL) {
@@ -258,7 +261,7 @@ int main(void) {
                             print_timetable(DDL(dataRecord), output_file_name);
                             print_report(output_file_name);
                         }
-                        
+
                         exit(0);
                     } else {
                         /*child process*/
