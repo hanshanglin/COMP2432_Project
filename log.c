@@ -9,7 +9,7 @@
 static int log_id=1;
 static char *algo_name=NULL;
 static FILE *log_file=NULL;
-static FILE *err_file=NULL;
+//static FILE *err_file=NULL;
 static char _log_date_buf[11];
 
 static int acc_count=0;
@@ -32,7 +32,7 @@ const char* type_to_command(task_type type){
 
 
 void init_error_log(){
-    err_file=fopen("S3_error.log","w");
+    //err_file=fopen("S3_error.log","w");
 }
 
 void set_algorithm_name(const char* algorithm_name){
@@ -80,6 +80,7 @@ void log_log(Record* record, bool accepted){
 }
 
 void log_error(Record* record, char* msg){
+    err_file=fopen("S3_error.log","a");
     fprintf(err_file,"[Error] %s <%s %s %s ",msg,type_to_command(record->type),record->id,convert_to_date(record->day->days_since_base,_log_date_buf));
     if(record->type==Assignment||record->type==Project){
         fprintf(err_file,"%d>\n",record->duration);
@@ -88,6 +89,7 @@ void log_error(Record* record, char* msg){
     else{
         fprintf(err_file,"%02d:00 %d>\n",record->day->time_slot+getStartTime(),record->duration);
     }
+    fclose(err_file);
 }
 
 void log_stop(){
@@ -95,7 +97,7 @@ void log_stop(){
 }
 
 void stop_error_log(){
-    fclose(err_file);
+    //fclose(err_file);
 }
 
 void print_timetable(Record** table, char* filename){
