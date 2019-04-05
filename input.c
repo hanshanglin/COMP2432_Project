@@ -175,7 +175,7 @@ int main(void) {
         close(fd1[1]);
         close(fd2[0]);
         Data_record *dataRecord = newDataRecord();
-        init_error_log();
+
         char *user_input = malloc(MAX_INPUT_SIZE);
         while (strcmp(user_input, "exitS3 ") != 0) {
             read(fd1[0], user_input, MAX_INPUT_SIZE);
@@ -183,7 +183,7 @@ int main(void) {
             if (strcmp(user_input, " ") == 0) {
                 printf("Wrong input!Please enter an appropriate task!\n");
                 write(fd2[1], "cont", 4);
-                stop_error_log();
+
                 continue;
             }
             if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
@@ -213,7 +213,6 @@ int main(void) {
                     FILE *fp = fopen(split_ptr, "r");
                     if (fp == NULL) {
                         printf("Could not open file %s", split_ptr);
-                        stop_error_log();
                         write(fd2[1], "cont", 4);
                         continue;
                     }
@@ -285,6 +284,7 @@ int main(void) {
         exit(0);
     } else {
         /*parent process*/
+        init_error_log();
         close(fd1[0]);
         close(fd2[1]);
         printf("   ~~WELCOME TO S3~~\n\n");
@@ -299,6 +299,7 @@ int main(void) {
             read(fd2[0], child_msg, 4);/*read the feedback from the child*/
         }
         free(par_user_input);
+        stop_error_log();
         printf("Byebye~\n");
         close(fd1[1]);
         close(fd2[0]);
