@@ -160,33 +160,27 @@ void addActivity(Data_record *dataRecord, char *delim, char *split_ptr) {
 int main(void) {
     /*pipe creation*/
     int fd1[2];/*parent writes, child reads*/
-    int fd2[2];/*parent reads, child writes*/
     if (pipe(fd1) < 0) {
         printf("Pipe creation fails\n");
         exit(1);
     }
-    if (pipe(fd2) < 0) {
-        printf("Pipe creation fails\n");
-        exit(1);
-    }
+
     if (fork() == 0) {
         /*child process*/
         /*this child used to store the input information*/
         close(fd1[1]);
-        close(fd2[0]);
+
         Data_record *dataRecord = newDataRecord();
 
         char *user_input = malloc(MAX_INPUT_SIZE);
-        while (strcmp(user_input, "exitS3 ") != 0) {
-            read(fd1[0], user_input, MAX_INPUT_SIZE);
+        while (true) {
+            read(fd1[0], user_input, MAX_INPUT_SIZE);/*read once the pipe is empty*/
 
             if (strcmp(user_input, " ") == 0) {
                 printf("Wrong input!Please enter an appropriate task!\n");
-                write(fd2[1], "cont", 4);
-
                 continue;
             }
-            if (strcmp(user_input, "exitS3 ") != 0) {    /*parsing the string input by user*/
+            if (strcmp(user_input, "exitS3") != 0) {    /*parsing the string input by user*/
 
                 char delim[] = " ";/*splitting key*/
                 char *split_ptr = strtok(user_input, delim);/*get the first word*/
@@ -207,13 +201,10 @@ int main(void) {
 
                     split_ptr = strtok(NULL, delim);/*get file name*/
 
-                    /* FILE *fp = fopen(
-                             "C:\\Users\\incandescentxxc\\desktop\\CodesHQ\\C Language\\OS\\Project\\testcase2.txt",
-                             "r");*/
                     FILE *fp = fopen(split_ptr, "r");
                     if (fp == NULL) {
                         printf("Could not open file %s", split_ptr);
-                        write(fd2[1], "cont", 4);
+                        /*write(fd2[1], "cont", 4);*/
                         continue;
                     }
 
@@ -264,50 +255,46 @@ int main(void) {
                         exit(0);
                     } else {
                         /*child process*/
-                        wait(NULL);
+                        wait(NULL);/*synchronized method, wating for the grandchild ends*/
                     }
-
 
                 } else {
                     printf("Wrong input! Please enter an appropriate task!\n");
                 }
-                stop_error_log();
-                write(fd2[1], "cont", 4);
 
+
+            } else {/*when user enter exitS3*/
+                break;
             }
-
-
         }
-        write(fd2[1], "exit", 4);
+
         close(fd1[0]);
-        close(fd2[1]);
+
         exit(0);
     } else {
         /*parent process*/
-        //init_error_log();
         close(fd1[0]);
-        close(fd2[1]);
         printf("   ~~WELCOME TO S3~~\n\n");
 
         char *par_user_input = malloc(MAX_INPUT_SIZE);
-        char child_msg[5] = {'0', '0', '0', '0', '\0'};
-        while (strcmp(child_msg, "exit") != 0) {
+        printf("Please enter: ");
+        fgets(par_user_input, MAX_INPUT_SIZE, stdin);
+        par_user_input[strlen(par_user_input) - 1] = ' ';
+        while (strcmp(par_user_input, "exitS3 ") != 0) {
+            write(fd1[1], par_user_input, MAX_INPUT_SIZE);/*pass the user input to the child*/
+            sleep(1);
             printf("Please enter: ");
             fgets(par_user_input, MAX_INPUT_SIZE, stdin);
             par_user_input[strlen(par_user_input) - 1] = ' ';
-            write(fd1[1], par_user_input, MAX_INPUT_SIZE);/*pass the user input to the child*/
-            read(fd2[0], child_msg, 4);/*read the feedback from the child*/
         }
+        write(fd1[1], "exitS3", MAX_INPUT_SIZE);/*inform the children of ending*/
         free(par_user_input);
-        //stop_error_log();
+        wait(NULL);/*wait for child s ending*/
+
         printf("Byebye~\n");
         close(fd1[1]);
-        close(fd2[0]);
-
-        wait(NULL);
 
 
     }
-
 
 }
