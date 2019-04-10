@@ -156,7 +156,7 @@ void print_report(char* filename){
     fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
 
 
-    int completed_count=0,time_completed,time_total=0;
+    int completed_count=0,time_completed=0,time_total=0;
     float percent1[5],percent2[5];
     for(int i=0;i<4;i++){
 	completed_count+=completed_counts[i];
