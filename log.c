@@ -15,9 +15,9 @@ static char _log_date_buf[11];
 static int acc_count=0;
 static int rej_count=0;
 static int slot_occupied=0;
-static int completed_count=0,completed_time=0;
-static int total_time=0;
-//static Data_record* accepted_tasks=NULL;
+static int completed_counts[4],total_counts[4];
+static int completed_time[4],total_time[4];
+static Data_record* unfinished_tasks=NULL;
 static Data_record* rejected_tasks=NULL;
 
 const char* type_to_command(task_type type){
@@ -55,7 +55,7 @@ void log_start(){
     acc_count=0;
     rej_count=0;
     slot_occupied=0;
-    //accepted_tasks=newDataRecord();
+    unfinished_tasks=newDataRecord();
     rejected_tasks=newDataRecord();
 }
 
@@ -73,9 +73,7 @@ void log_log(Record* record, bool accepted){
     fprintf(log_file,"%s\n",accepted?"Accepted":"         Rejected");
 
     accepted?acc_count++:rej_count++;
-    if(accepted)
-        ;//add_data(accepted_tasks,record);
-    else
+    if(!accepted)
         add_data(rejected_tasks,record);
 }
 
@@ -128,10 +126,15 @@ void print_timetable(Record** table, char* filename){
                 str=table[i*width+j]->id;
                 slot_occupied++;
                 if(table[i*width+j]->excuted>-1){
-                    total_time+=table[i*width+j]->duration;
-                    completed_time+=table[i*width+j]->excuted;
-                    if(table[i*width+j]->duration==table[i*width+j]->excuted) completed_count++;
+		    int type=table[i*width+j]->type-1;
+                    total_time[type]+=table[i*width+j]->duration;
+                    completed_time[type]+=table[i*width+j]->excuted;
+                    if(table[i*width+j]->duration==table[i*width+j]->excuted)
+			completed_counts[type]++;
+		    else
+			add_data(unfinished_tasks,table[i*width+j]);
                     table[i*width+j]->excuted=-1;
+		    total_counts[type]++;
                 }
             }
             printf("\t%-12s",str);
@@ -152,29 +155,64 @@ void print_report(char* filename){
     fprintf(out,"There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc_count+rej_count,acc_count,rej_count);
     fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
 
-    /*int completed_count=0,completed_time=0;
-    int total_time=0;
-    new_iter(accepted_tasks);
-    for(Record* rec=next(accepted_tasks);rec!=NULL;rec=next(accepted_tasks)){
-        total_time+=rec->duration;
-        completed_time+=rec->excuted;
-        if(rec->duration==rec->excuted) completed_count++;
-    }*/
+
+    int completed_count=0,time_completed,time_total=0;
+    float percent1[5],percent2[5];
+    for(int i=0;i<4;i++){
+	completed_count+=completed_counts[i];
+	time_completed+=completed_time[i];
+	time_total+=total_time[i];
+	if(total_counts[i]) percent1[i]=1e2*completed_counts[i]/total_counts[i];
+	if(total_time[i]) percent2[i]=1e2*completed_time[i]/total_time[i];
+    }
+    if(acc_count) percent1[4]=1e2*completed_count/acc_count;
+    if(time_total) percent2[4]=1e2*time_completed/time_total;
+
+    printf("\nProject:    %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[3],total_counts[3],percent1[3],completed_time[3],total_time[3],percent2[3]);
+    printf("\nAssignment: %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[2],total_counts[2],percent1[2],completed_time[2],total_time[2],percent2[2]);
+    printf("\nRevision:   %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[1],total_counts[1],percent1[1],completed_time[1],total_time[1],percent2[1]);
+    printf("\nActivity:   %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[0],total_counts[0],percent1[0],completed_time[0],total_time[0],percent2[0]);
     
-    printf("%d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,1e2*completed_count/acc_count);
-    printf("%d out of %d hours arranged (%.2f%%)\n",completed_time,total_time,1e2*completed_time/total_time);
+    fprintf(out,"\nProject:    %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[3],total_counts[3],percent1[3],completed_time[3],total_time[3],percent2[3]);
+    fprintf(out,"\nAssignment: %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[2],total_counts[2],percent1[2],completed_time[2],total_time[2],percent2[2]);
+    fprintf(out,"\nRevision:   %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[1],total_counts[1],percent1[1],completed_time[1],total_time[1],percent2[1]);
+    fprintf(out,"\nActivity:   %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
+	completed_counts[0],total_counts[0],percent1[0],completed_time[0],total_time[0],percent2[0]);
+
+
+    printf("\n\nTotal:      %d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,percent1[4]);
+    printf("            %d out of %d hours arranged (%.2f%%)\n",time_completed,time_total,percent2[4]);
     
-    fprintf(out,"%d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,1e2*completed_count/acc_count);
-    fprintf(out,"%d out of %d hours arranged (%.2f%%)\n",completed_time,total_time,1e2*completed_time/total_time);
+    fprintf(out,"\n\nTotal:      %d out of %d tasks completely arranged (%.2f%%)\n",completed_count,acc_count,percent1[4]);
+    fprintf(out,"            %d out of %d hours arranged (%.2f%%)\n",time_completed,time_total,percent2[4]);
     
     if(rejected_tasks->count){
-        printf("The following task(s) will be rejected:\n");
-        fprintf(out,"The following task(s) will be rejected:\n");
+        printf("\nThe following task(s) will be rejected:\n");
+        fprintf(out,"\nThe following task(s) will be rejected:\n");
         new_iter(rejected_tasks);
         for(Record* rec=next(rejected_tasks);rec!=NULL;rec=next(rejected_tasks))
             printf("%s %s\n",type_to_command(rec->type),rec->id),fprintf(out,"%s %s\n",type_to_command(rec->type),rec->id);
     }
 
+    if(unfinished_tasks->count){
+        printf("\nThe following task(s) will not be completely done:\n");
+        fprintf(out,"\nThe following task(s) will not be completely done:\n");
+        new_iter(unfinished_tasks);
+        for(Record* rec=next(unfinished_tasks);rec!=NULL;rec=next(unfinished_tasks))
+            printf("%s %s\n",type_to_command(rec->type),rec->id),fprintf(out,"%s %s\n",type_to_command(rec->type),rec->id);
+    }
+
+    printf("\n");
+    fprintf(out,"\n");
+
     fclose(out);
     free(rejected_tasks);
+    free(unfinished_tasks);
 }
