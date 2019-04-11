@@ -1,0 +1,50 @@
+Alice Timetable
+Period: 2019-04-08 to 2019-04-21
+Algorithm used: Priority
+Date      	19:00       	20:00       	21:00       	22:00       
+2019-04-08	COMP2000P1  	COMP2000P1  	COMP2000P1  	COMP2000P1  
+2019-04-09	COMP3211P1  	COMP3211P1  	COMP3211P1  	COMP3211P1  
+2019-04-10	COMP3211P1  	COMP3211P1  	COMP3211P1  	COMP2422P2  
+2019-04-11	COMP2422P2  	COMP2422P2  	COMP2422P2  	COMP2422P2  
+2019-04-12	COMP3211P1  	COMP3211P1  	COMP3211P1  	COMP3211P1  
+2019-04-13	COMP3211P1  	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   
+2019-04-14	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   
+2019-04-15	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   	COMP3211P2  
+2019-04-16	COMP3211P2  	COMP3211P2  	COMP3211P2  	COMP3211P2  
+2019-04-17	COMP3211P2  	COMP3211P2  	COMP3211P2  	COMP3211P2  
+2019-04-18	COMP2422A2  	COMP2422A2  	COMP2422A2  	COMP2422A2  
+2019-04-19	COMP2432A3  	COMP2432A3  	COMP2432A3  	COMP2432A3  
+2019-04-20	COMP2000A2  	COMP2000A2  	COMP2000A2  	N/A         
+2019-04-21	GEC1H16     	N/A         	N/A         	N/A         
+***Summary Report***
+Algorithm used: Priority
+There are 22 requests.
+Number of request accepted: 10
+Number of request rejected: 12
+Number of time slots used: 52 (92.86%)
+
+Project:    6 out of 6 completely arranged (100.00%), 40 out of 40 hours of work (100.00%)
+Assignment: 2 out of 3 completely arranged (66.67%), 11 out of 13 hours of work (84.62%)
+Revision:   1 out of 1 completely arranged (100.00%), 1 out of 1 hours of work (100.00%)
+Activity:   0 out of 0 completely arranged (0.00%), 0 out of 0 hours of work (0.00%)
+
+Total:      9 out of 10 tasks completely arranged (90.00%)
+            52 out of 54 hours arranged (96.30%)
+
+The following task(s) will be rejected:
+addAssignment AMA1130A1
+addAssignment COMP2432A1
+addAssignment AMA1130A2
+addAssignment COMP2000A1
+addAssignment COMP3211A2
+addRevision COMP2432
+addRevision COMP2422
+addRevision GEC1H16
+addRevision COMP2422
+addRevision AMA1130
+addActivity Meeting
+addActivity Basketball
+
+The following task(s) will not be completely done:
+addAssignment COMP2422A2
+

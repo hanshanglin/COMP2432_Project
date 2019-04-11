@@ -1,0 +1,25 @@
+****Log File - SDDL***
+ID	Event                                                 	Accepted/Rejected
+==================================================================================
+0001	addRevision COMP2432 2019-04-08 20:00 2              	         Rejected
+0002	addAssignment AMA1130A1 2019-04-08 1                 	Accepted
+0003	addAssignment COMP2432A1 2019-04-11 4                	Accepted
+0004	addAssignment AMA1130A2 2019-04-12 2                 	Accepted
+0005	addProject COMP2000P1 2019-04-12 4                   	Accepted
+0006	addProject COMP3211P1 2019-04-14 7                   	Accepted
+0007	addProject COMP2422P2 2019-04-15 5                   	Accepted
+0008	addRevision COMP2422 2019-04-13 19:00 2              	         Rejected
+0009	addProject COMP3211P1 2019-04-16 5                   	Accepted
+0010	addActivity Meeting 2019-04-16 19:00 3               	         Rejected
+0011	addRevision GEC1H16 2019-04-17 19:00 1               	Accepted
+0012	addAssignment COMP2000A1 2019-04-17 10                	         Rejected
+0013	addAssignment COMP2422A2 2019-04-18 6                	         Rejected
+0014	addRevision COMP2422 2019-04-18 19:00 2              	         Rejected
+0015	addAssignment COMP3211A2 2019-04-18 4                	Accepted
+0016	addAssignment COMP2432A3 2019-04-19 4                	Accepted
+0017	addProject GEC1H16P1 2019-04-19 10                    	Accepted
+0018	addRevision AMA1130 2019-04-20 20:00 1               	         Rejected
+0019	addAssignment COMP2000A2 2019-04-20 3                	         Rejected
+0020	addActivity Basketball 2019-04-20 20:00 2            	         Rejected
+0021	addProject COMP3211P2 2019-04-21 9                   	Accepted
+0022	addRevision GEC1H16 2019-04-21 19:00 1               	         Rejected

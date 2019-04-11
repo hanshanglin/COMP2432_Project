@@ -1,0 +1,45 @@
+Alice Timetable
+Period: 2019-04-08 to 2019-04-21
+Algorithm used: SDDL
+Date      	19:00       	20:00       	21:00       	22:00       
+2019-04-08	COMP3211P2  	GEC1H16P1   	GEC1H16P1   	AMA1130A1   
+2019-04-09	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   
+2019-04-10	COMP3211P1  	GEC1H16     	COMP2000P1  	COMP2000P1  
+2019-04-11	COMP2432A1  	COMP2432A1  	COMP2432A1  	COMP2432A1  
+2019-04-12	COMP2000P1  	COMP2000P1  	AMA1130A2   	AMA1130A2   
+2019-04-13	COMP2422P2  	COMP3211P1  	COMP3211P1  	COMP3211P1  
+2019-04-14	COMP3211P1  	COMP3211P1  	COMP3211P1  	COMP3211P1  
+2019-04-15	COMP2422P2  	COMP2422P2  	COMP2422P2  	COMP2422P2  
+2019-04-16	COMP3211P1  	COMP3211P1  	COMP3211P1  	COMP3211P1  
+2019-04-17	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   	GEC1H16P1   
+2019-04-18	COMP3211A2  	COMP3211A2  	COMP3211A2  	COMP3211A2  
+2019-04-19	COMP2432A3  	COMP2432A3  	COMP2432A3  	COMP2432A3  
+2019-04-20	COMP3211P2  	COMP3211P2  	COMP3211P2  	COMP3211P2  
+2019-04-21	COMP3211P2  	COMP3211P2  	COMP3211P2  	COMP3211P2  
+***Summary Report***
+Algorithm used: SDDL
+There are 22 requests.
+Number of request accepted: 12
+Number of request rejected: 10
+Number of time slots used: 56 (100.00%)
+
+Project:    6 out of 6 completely arranged (100.00%), 40 out of 40 hours of work (100.00%)
+Assignment: 5 out of 5 completely arranged (100.00%), 15 out of 15 hours of work (100.00%)
+Revision:   1 out of 1 completely arranged (100.00%), 1 out of 1 hours of work (100.00%)
+Activity:   0 out of 0 completely arranged (0.00%), 0 out of 0 hours of work (0.00%)
+
+Total:      12 out of 12 tasks completely arranged (100.00%)
+            56 out of 56 hours arranged (100.00%)
+
+The following task(s) will be rejected:
+addRevision COMP2432
+addRevision COMP2422
+addActivity Meeting
+addAssignment COMP2000A1
+addAssignment COMP2422A2
+addRevision COMP2422
+addRevision AMA1130
+addAssignment COMP2000A2
+addActivity Basketball
+addRevision GEC1H16
+
