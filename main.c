@@ -702,11 +702,11 @@ void print_report(char* filename){
     FILE* out=fopen(filename,"a");
     printf("***Summary Report***\nAlgorithm used: %s\n",algo_name);
     printf("There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc_count+rej_count,acc_count,rej_count);
-    printf("Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
+    printf("Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((get_end_time()-get_start_time())*get_duration_date()));
 
     fprintf(out,"***Summary Report***\nAlgorithm used: %s\n",algo_name);
     fprintf(out,"There are %d requests.\nNumber of request accepted: %d\nNumber of request rejected: %d\n",acc_count+rej_count,acc_count,rej_count);
-    fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((getEndTime()-getStartTime())*getdurationDate()));
+    fprintf(out,"Number of time slots used: %d (%.2f%%)\n",slot_occupied,1e2*slot_occupied / ((get_end_time()-get_start_time())*get_duration_date()));
 
 
     int completed_count=0,time_completed=0,time_total=0;
