@@ -9,7 +9,7 @@
 ####################################
 How to run:
         1. unzip the file
-        2. use `gcc std=gnu99 -o projectS3 S3.c`  and `./projectS3`  to run the program
+        2. use `gcc -std=gnu99 -o projectS3 S3.c`  and `./projectS3`  to run the program
         3. you may enter `addBatch s3_data_1.dat` or `addBatch s3_data_2.dat` to import data file
         4. you can run the scheduling algorithm by enter:
                 `runS3 [algorithm name] [filename]`
