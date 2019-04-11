@@ -162,11 +162,11 @@ void print_report(char* filename){
 	completed_count+=completed_counts[i];
 	time_completed+=completed_time[i];
 	time_total+=total_time[i];
-	if(total_counts[i]) percent1[i]=1e2*completed_counts[i]/total_counts[i];
-	if(total_time[i]) percent2[i]=1e2*completed_time[i]/total_time[i];
+	if(total_counts[i]) percent1[i]=1e2*completed_counts[i]/total_counts[i]; else percent1[i]=0;
+	if(total_time[i]) percent2[i]=1e2*completed_time[i]/total_time[i]; else percent2[i]=0;
     }
-    if(acc_count) percent1[4]=1e2*completed_count/acc_count;
-    if(time_total) percent2[4]=1e2*time_completed/time_total;
+    if(acc_count) percent1[4]=1e2*completed_count/acc_count; else percent1[4]=0;
+    if(time_total) percent2[4]=1e2*time_completed/time_total; else percent2[4]=0;
 
     printf("\nProject:    %d out of %d completely arranged (%.2f%%), %d out of %d hours of work (%.2f%%)",
 	completed_counts[3],total_counts[3],percent1[3],completed_time[3],total_time[3],percent2[3]);
